@@ -1,40 +1,51 @@
-// components/RectangleCard/RectangleCardStyles.js
 import { StyleSheet } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isSmallDevice, fontSize } from '../../utils/responsiveHelper';
+import { 
+  widthPercentageToDP as wp, 
+  heightPercentageToDP as hp 
+} from 'react-native-responsive-screen';
+import { 
+  isSmallDevice, 
+  fontSize, 
+  spacing, 
+  borderRadius,
+  shadowStyles 
+} from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
   loaderContainer: {
-    padding: hp(isSmallDevice ? '1%' : '1.5%'),
+    padding: hp('2%'),
     alignItems: 'center',
   },
   flatListContainer: {
-    paddingHorizontal: wp(isSmallDevice ? '2%' : '3%'),
-    paddingVertical: hp(isSmallDevice ? '1%' : '1%'),
+    paddingHorizontal: spacing.md,
+    paddingVertical: hp('1%'),
   },
   rectangleCard: {
-    paddingVertical: hp(isSmallDevice ? '1.5%' : '1.3%'),
-    paddingHorizontal: wp(isSmallDevice ? '3%' : '4%'),
-    borderRadius: wp(isSmallDevice ? '2.5%' : '3%'),
-    marginHorizontal: wp('1.2%'),
-    minWidth: wp(isSmallDevice ? '18%' : '20%'),
+    paddingVertical: hp(isSmallDevice ? '1.5%' : '1.8%'),
+    paddingHorizontal: wp(isSmallDevice ? '4%' : '5%'),
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.xs,
+    minWidth: wp(isSmallDevice ? '20%' : '22%'),
     alignItems: 'center',
     justifyContent: 'center',
+    ...shadowStyles.light,
   },
   activeCard: {
-    backgroundColor: '#000000',
-    borderWidth: 1.5,
-    borderColor: '#FFFFFF',
+    backgroundColor: '#212529',
+    borderWidth: 2,
+    borderColor: '#ffffff',
+    transform: [{ scale: 1.05 }],
   },
   inactiveCard: {
-    backgroundColor: '#000000',
+    backgroundColor: '#495057',
     borderWidth: 0,
   },
   cardText: {
-    fontSize: fontSize(wp('3.2%'), wp('3.2%'), wp('3.6%')), // Small / Medium / Large
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    fontSize: fontSize(13, 12, 13, 14),
+    color: '#ffffff',
+    fontWeight: '700',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
 });
 
