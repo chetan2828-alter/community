@@ -1,23 +1,86 @@
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import StackNavigator from './src/Components/StackNavigator';
-import { AuthProvider } from './src/context/AuthContext';
-import { MemberStatusProvider } from './src/context/MemberStatusContext';
-import './src/i18n/i18n.config';
 
-export default function App() {
+// use these  to start from first page 
+// import React from 'react';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import TabNavigator from '././src/Components/TabNavigator';
+// import FirstPage from './src/Pages/FirstPage/FirstPage';
+
+// import SecondPage from './src/Pages/SecondPage/SecondPage';
+// import StackNavigator from './src/Components/StackNavigator';
+// import Home from './src/Screens/HomePage/Home';
+// import { MemberStatusProvider } from './src/context/MemberStatusContext';
+
+// const Stack = createStackNavigator();
+
+// function App  ()  {
+//   return (
+//     <MemberStatusProvider>
+//    <StackNavigator>
+
+//    </StackNavigator>
+//    </MemberStatusProvider>
+//   );
+// };
+
+// export default App;
+
+// directl redirectiung to the hoem tab developing purpose only 
+
+// import { StyleSheet } from 'react-native';
+// import StackNavigator from './src/Components/StackNavigator';
+// import TabNavigator from './src/Components/TabNavigator';
+// import { NavigationContainer } from '@react-navigation/native';
+// export default function App() {
+//   return (
+//     // <StackNavigator></StackNavigator>
+//     <NavigationContainer>
+//     <TabNavigator></TabNavigator>
+//     </NavigationContainer>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex:1,
+//     backgroundColor: '#fff',
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//   },
+// });
+
+
+//usign for the navigation for implemenitn g logout button 
+
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import TabNavigator from '././src/Components/TabNavigator';
+import FirstPage from './src/Pages/FirstPage/FirstPage';
+
+import SecondPage from './src/Pages/SecondPage/SecondPage';
+import StackNavigator from './src/Components/StackNavigator';
+import Home from './src/Screens/HomePage/Home';
+import { MemberStatusProvider } from './src/context/MemberStatusContext';
+import { AuthProvider } from './src/context/AuthContext';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'; // ✅ Add this
+
+
+const Stack = createStackNavigator();
+
+function App  ()  {
   return (
-    <SafeAreaProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar style="auto" />
-        <AuthProvider>
-          <MemberStatusProvider>
-            <StackNavigator />
-          </MemberStatusProvider>
-        </AuthProvider>
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+    <AuthProvider>
+    <MemberStatusProvider>
+   <StackNavigator>
+
+   </StackNavigator>
+   </MemberStatusProvider>
+   </AuthProvider>
+    </GestureHandlerRootView>
   );
-}
+};
+
+export default App;
+

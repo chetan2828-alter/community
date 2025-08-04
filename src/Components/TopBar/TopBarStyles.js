@@ -3,41 +3,39 @@ import {
   widthPercentageToDP as wp, 
   heightPercentageToDP as hp 
 } from 'react-native-responsive-screen';
-import { 
-  isSmallDevice, 
-  spacing, 
-  borderRadius, 
-  shadowStyles,
-  getSafeAreaPadding 
-} from '../../utils/responsiveHelper';
+import { isSmallDevice, fontSize } from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#212529',
-    paddingHorizontal: spacing.md,
-    paddingTop: getSafeAreaPadding().top,
-    paddingBottom: hp('2%'),
-    ...shadowStyles.heavy,
-    borderBottomLeftRadius: borderRadius.xl,
-    borderBottomRightRadius: borderRadius.xl,
+    paddingHorizontal: wp(isSmallDevice ? '4%' : '4%'),
+    paddingTop: Platform.OS === 'ios' ? hp('6%') : StatusBar.currentHeight + hp('2%'),
+    paddingBottom: hp(isSmallDevice ? '1.5%' : '2%'),
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: hp('0.4%') },
+    shadowOpacity: 0.2,
+    shadowRadius: wp('1.5%'),
+    borderBottomLeftRadius: wp('5%'),
+    borderBottomRightRadius: wp('5%'),
   },
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: hp('2%'),
+    marginBottom: hp(isSmallDevice ? '2%' : '1.5%'),
   },
   profileContainer: {
     width: wp(isSmallDevice ? '13%' : '12%'),
     height: wp(isSmallDevice ? '13%' : '12%'),
-    borderRadius: wp('7%'),
+    borderRadius: wp('6%'),
     overflow: 'hidden',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: '#ffd700',
-    marginLeft: spacing.sm,
+    borderColor: '#FFD700',
+    marginLeft: wp('2%'),
   },
   profileImage: {
     width: '100%',
@@ -47,16 +45,15 @@ const styles = StyleSheet.create({
   iconGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: borderRadius.xl,
-    paddingVertical: hp('0.8%'),
-    paddingHorizontal: spacing.md,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: wp('6%'),
+    paddingVertical: hp(isSmallDevice ? '0.5%' : '1%'),
+    paddingHorizontal: wp(isSmallDevice ? '2%' : '2.5%'),
   },
   iconContainer: {
-    paddingHorizontal: spacing.sm,
-    paddingVertical: hp('0.8%'),
-    borderRadius: borderRadius.md,
-    marginHorizontal: spacing.xs,
+    paddingHorizontal: wp(isSmallDevice ? '2%' : '2.5%'),
+    paddingVertical: hp(isSmallDevice ? '0.6%' : '0.8%'),
+    borderRadius: wp('5%'),
   },
 });
 
