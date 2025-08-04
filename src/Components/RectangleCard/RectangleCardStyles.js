@@ -1,40 +1,49 @@
-// components/RectangleCard/RectangleCardStyles.js
 import { StyleSheet } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { isSmallDevice, fontSize } from '../../utils/responsiveHelper';
+import { 
+  wp, hp, fontSize, spacing, borderRadius, 
+  isSmallDevice, colors, typography 
+} from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
   loaderContainer: {
-    padding: hp(isSmallDevice ? '1%' : '1.5%'),
+    paddingVertical: spacing.md,
     alignItems: 'center',
   },
   flatListContainer: {
-    paddingHorizontal: wp(isSmallDevice ? '2%' : '3%'),
-    paddingVertical: hp(isSmallDevice ? '1%' : '1%'),
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.sm,
   },
   rectangleCard: {
-    paddingVertical: hp(isSmallDevice ? '1.5%' : '1.3%'),
-    paddingHorizontal: wp(isSmallDevice ? '3%' : '4%'),
-    borderRadius: wp(isSmallDevice ? '2.5%' : '3%'),
-    marginHorizontal: wp('1.2%'),
-    minWidth: wp(isSmallDevice ? '18%' : '20%'),
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.xl,
+    marginHorizontal: spacing.xs,
+    minWidth: wp(isSmallDevice ? 20 : 22),
     alignItems: 'center',
     justifyContent: 'center',
+    height: hp(5),
   },
   activeCard: {
-    backgroundColor: '#000000',
-    borderWidth: 1.5,
-    borderColor: '#FFFFFF',
+    backgroundColor: colors.white,
+    borderWidth: 2,
+    borderColor: colors.primary,
   },
   inactiveCard: {
-    backgroundColor: '#000000',
-    borderWidth: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   cardText: {
-    fontSize: fontSize(wp('3.2%'), wp('3.2%'), wp('3.6%')), // Small / Medium / Large
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    fontSize: fontSize(isSmallDevice ? 11 : 12),
+    fontWeight: '700',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  activeText: {
+    color: colors.primary,
+  },
+  inactiveText: {
+    color: colors.white,
   },
 });
 

@@ -1,135 +1,67 @@
-// import { StyleSheet } from 'react-native';
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#f8f8f8',  // Soft background color
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     paddingHorizontal: 20,
-//   },
-//   title: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     color: '#4CAF50',  // Green color for title
-//     marginBottom: 20,
-//   },
-//   radioGroup: {
-//     width: '100%',
-//     marginBottom: 30,
-//   },
-//   radioLabel: {
-//     fontSize: 18,
-//     color: '#333',
-//     marginBottom: 10,
-//     textAlign: 'center',  // Center-align the label
-//   },
-//   radioButtonContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginVertical: 10,  // Space between radio buttons
-//   },
-//   radioButtonText: {
-//     fontSize: 16,
-//     color: '#333',  // Dark gray text color for radio options
-//     marginLeft: 10,
-//   },
-// });
-
-// export default styles;
-// 
-// 
-// pehle ka normal design neeche ka moder design
-// 
-// 
-
-
-import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { 
-  widthPercentageToDP as wp, 
-  heightPercentageToDP as hp 
-} from 'react-native-responsive-screen';
-import { fontSize, spacing, borderRadius, isSmallDevice } from '../../utils/responsiveHelper';
+  wp, hp, fontSize, spacing, borderRadius, getSafeAreaTop,
+  colors, typography, shadows, isSmallDevice 
+} from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9fafb',
+    backgroundColor: colors.gray[50],
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.lg,
-    paddingTop: Platform.OS === 'ios' ? hp('8%') : StatusBar.currentHeight + hp('4%'),
+    paddingTop: getSafeAreaTop() + spacing.xl,
   },
   title: {
-    fontSize: fontSize(isSmallDevice ? 30 : 35),
+    fontSize: isSmallDevice ? typography.h1 : fontSize(38),
     fontWeight: '900',
-    color: 'black',
-    marginBottom: hp('5%'),
+    color: colors.primary,
+    marginBottom: spacing.xxl,
     textAlign: 'center',
     letterSpacing: 1.5,
   },
   radioGroup: {
     width: '100%',
-    marginBottom: hp('5%'),
-    paddingHorizontal: spacing.lg,
+    marginBottom: spacing.xxl,
+    paddingHorizontal: spacing.md,
   },
   radioLabel: {
-    fontSize: fontSize(20),
-    color: '#34495e',
-    marginBottom: hp('1.2%'),
+    fontSize: typography.h4,
+    color: colors.gray[700],
+    marginBottom: spacing.lg,
     textAlign: 'center',
+    fontWeight: '600',
   },
   radioButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: hp('1.5%'),
+    marginVertical: spacing.md,
     paddingHorizontal: spacing.lg,
-    paddingVertical: hp('1.5%'),
-    borderRadius: borderRadius.md,
-    backgroundColor: '#ecf0f1',
-    shadowColor: '#bdc3c7',
-    shadowOffset: { width: 0, height: hp('0.6%') },
-    shadowOpacity: 0.3,
-    shadowRadius: wp('2%'),
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.lg,
+    backgroundColor: colors.white,
+    borderWidth: 2,
+    borderColor: colors.gray[200],
+    ...shadows.small,
   },
   radioButtonText: {
-    fontSize: fontSize(18),
-    color: '#34495e',
+    fontSize: typography.h5,
+    color: colors.gray[700],
     marginLeft: spacing.md,
-  },
-  button: {
-    backgroundColor: '#212529',
-    paddingVertical: hp('2%'),
-    paddingHorizontal: wp('12%'),
-    borderRadius: borderRadius.xl,
-    marginTop: hp('4%'),
-    elevation: 10,
-    shadowColor: '#212529',
-    shadowOffset: { width: 0, height: hp('1.2%') },
-    shadowOpacity: 0.3,
-    shadowRadius: wp('4%'),
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: fontSize(20),
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: '500',
   },
   submitButton: {
-    backgroundColor: '#212529',
-    paddingVertical: hp('2%'),
-    paddingHorizontal: wp('12%'),
-    borderRadius: borderRadius.xl,
-    marginTop: hp('4%'),
-    elevation: 10,
-    shadowColor: '#2980b9',
-    shadowOffset: { width: 0, height: hp('1.2%') },
-    shadowOpacity: 0.3,
-    shadowRadius: wp('4%'),
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: wp(15),
+    borderRadius: borderRadius.lg,
+    marginTop: spacing.xl,
+    ...shadows.medium,
   },
   submitButtonText: {
-    color: '#fff',
-    fontSize: fontSize(20),
+    color: colors.white,
+    fontSize: typography.h4,
     fontWeight: '800',
     textAlign: 'center',
   },

@@ -5,20 +5,20 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Dimensions,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import { Video } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { wp, colors, iconSize } from '../../utils/responsiveHelper';
 import styles from './PostCardStyles';
-
-const { width: screenWidth } = Dimensions.get('window');
 
 const PostCard = ({ activeCategory }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
   const navigation = useNavigation();
@@ -28,9 +28,9 @@ const PostCard = ({ activeCategory }) => {
     fetchPosts();
   }, [activeCategory]);
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (isRefresh = false) => {
     try {
-      setLoading(true);
+      if (!isRefresh) setLoading(true);
       const token = await AsyncStorage.getItem('token');
       
       if (!token) {
@@ -59,7 +59,13 @@ const PostCard = ({ activeCategory }) => {
       setPosts([]);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchPosts(true);
   };
 
   const handleLike = async (postId) => {
@@ -71,7 +77,7 @@ const PostCard = ({ activeCategory }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      fetchPosts(); // Refresh posts
+      fetchPosts(true); // Refresh posts
     } catch (error) {
       console.error('Error liking post:', error);
     }
@@ -100,7 +106,9 @@ const PostCard = ({ activeCategory }) => {
             }}
             style={styles.userImage}
           />
-          <Text style={styles.username}>{item.uploadedBy || 'Unknown User'}</Text>
+          <Text style={styles.username} numberOfLines={1}>
+            {item.uploadedBy || 'Unknown User'}
+          </Text>
         </View>
 
         {/* Media Content */}
@@ -123,11 +131,12 @@ const PostCard = ({ activeCategory }) => {
             <TouchableOpacity
               style={styles.muteButton}
               onPress={() => setIsMuted(!isMuted)}
+              activeOpacity={0.8}
             >
               <Ionicons
                 name={isMuted ? 'volume-mute' : 'volume-high'}
-                size={20}
-                color="#FFFFFF"
+                size={iconSize.md}
+                color={colors.white}
               />
             </TouchableOpacity>
           </View>
@@ -143,6 +152,8 @@ const PostCard = ({ activeCategory }) => {
                 renderItem={({ item: imageUri }) => (
                   <Image source={{ uri: imageUri }} style={styles.carouselImage} />
                 )}
+                snapToInterval={wp(100) - wp(4)} // Account for card margins
+                decelerationRate="fast"
               />
               <View style={styles.imageCounter}>
                 <Text style={styles.counterText}>
@@ -167,11 +178,12 @@ const PostCard = ({ activeCategory }) => {
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() => handleLike(item.id)}
+            activeOpacity={0.7}
           >
             <Ionicons
               name={item.liked ? 'heart' : 'heart-outline'}
-              size={24}
-              color={item.liked ? '#e74c3c' : '#4A4A4A'}
+              size={iconSize.lg}
+              color={item.liked ? colors.danger : colors.gray[600]}
             />
             <Text style={styles.likeCount}>{item.totalLikes || 0}</Text>
           </TouchableOpacity>
@@ -179,8 +191,13 @@ const PostCard = ({ activeCategory }) => {
           <TouchableOpacity
             style={styles.actionButton}
             onPress={() => handleCommentPress(item)}
+            activeOpacity={0.7}
           >
-            <Ionicons name="chatbubble-outline" size={22} color="#4A4A4A" />
+            <Ionicons 
+              name="chatbubble-outline" 
+              size={iconSize.md} 
+              color={colors.gray[600]} 
+            />
             <Text style={styles.commentCount}>{item.totalComments || 0}</Text>
           </TouchableOpacity>
         </View>
@@ -197,15 +214,15 @@ const PostCard = ({ activeCategory }) => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#212529" />
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={colors.primary} />
       </View>
     );
   }
 
   if (posts.length === 0) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <Text style={styles.noPostsText}>No posts available for {activeCategory}</Text>
       </View>
     );
@@ -218,6 +235,14 @@ const PostCard = ({ activeCategory }) => {
       renderItem={renderPost}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[colors.primary]}
+          tintColor={colors.primary}
+        />
+      }
       onViewableItemsChanged={({ viewableItems }) => {
         const visibleVideoIndex = viewableItems.find(
           (item) => item.item.videoUrl
@@ -227,6 +252,9 @@ const PostCard = ({ activeCategory }) => {
       viewabilityConfig={{
         itemVisiblePercentThreshold: 50,
       }}
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={5}
+      windowSize={10}
     />
   );
 };

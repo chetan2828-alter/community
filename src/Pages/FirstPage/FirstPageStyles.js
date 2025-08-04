@@ -1,130 +1,74 @@
-
-// import { StyleSheet } from 'react-native';
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#f7f9fc',
-//     padding: 20,
-//   },
-//   title: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//     color: '#34495e',
-//     marginBottom: 20,
-//     textAlign: 'center',
-//   },
-//   pickerContainer: {
-//     width: '80%',
-//     backgroundColor: '#ecf0f1',
-//     borderRadius: 8,
-//     marginBottom: 20,
-//   },
-//   picker: {
-//     height: 50,
-//     color: '#34495e',
-//   },
-//   button: {
-//     backgroundColor: '#2ecc71',
-//     paddingVertical: 15,
-//     paddingHorizontal: 40,
-//     borderRadius: 8,
-//   },
-//   buttonText: {
-//     color: '#fff',
-//     fontWeight: 'bold',
-//     fontSize: 16,
-//   },
-// });
-
-// export default styles;
-
-// upar wala bhi ok ok hi but neeche wala more styling k liye kar rahe 
-
-
-import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { 
-  widthPercentageToDP as wp, 
-  heightPercentageToDP as hp 
-} from 'react-native-responsive-screen';
-import { fontSize, spacing, borderRadius } from '../../utils/responsiveHelper';
+  wp, hp, fontSize, spacing, borderRadius, getSafeAreaTop,
+  colors, typography, shadows 
+} from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f7f9fc',
+    backgroundColor: colors.gray[50],
     padding: spacing.lg,
-    paddingTop: Platform.OS === 'ios' ? hp('10%') : StatusBar.currentHeight + hp('5%'),
+    paddingTop: getSafeAreaTop() + spacing.xxl,
   },
   title: {
-    fontSize: fontSize(32),
+    fontSize: typography.h1,
     fontWeight: '900',
-    color: 'Black',
-    marginBottom: hp('5%'),
+    color: colors.primary,
+    marginBottom: spacing.xxl,
     textAlign: 'center',
     letterSpacing: 1,
   },
   pickerContainer: {
-    height: hp('8%'),
-    width: wp('80%'),
-    backgroundColor: '#fff',
+    height: hp(7),
+    width: wp(85),
+    backgroundColor: colors.white,
     borderRadius: borderRadius.lg,
-    borderColor: '#212529',
+    borderColor: colors.primary,
     borderWidth: 2,
-    marginBottom: hp('4%'),
+    marginBottom: spacing.xl,
     paddingHorizontal: spacing.md,
-    paddingVertical: hp('1.2%'),
+    paddingVertical: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    elevation: 3,
+    ...shadows.medium,
   },
   icon: {
     marginRight: spacing.sm,
   },
   picker: {
     flex: 1,
-    height: hp('7%'),
-    color: '#212529',
-    fontSize: fontSize(16),
-    borderRadius: borderRadius.md,
-    paddingVertical: hp('1.2%'),
+    height: hp(6),
+    color: colors.primary,
+    fontSize: typography.h6,
+    fontWeight: '500',
   },
   button: {
-    backgroundColor: '#212529',
-    paddingVertical: hp('2%'),
-    paddingHorizontal: wp('10%'),
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: wp(12),
     borderRadius: borderRadius.lg,
-    marginBottom: hp('2.5%'),
-    elevation: 5,
-    shadowColor: '#2980b9',
-    shadowOffset: { width: 0, height: hp('1.2%') },
-    shadowOpacity: 0.3,
-    shadowRadius: wp('4%'),
+    marginBottom: spacing.lg,
+    ...shadows.medium,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: fontSize(18),
+    color: colors.white,
+    fontWeight: '700',
+    fontSize: typography.h5,
   },
   changeLanguageButton: {
-    backgroundColor: '#ecf0f1',
-    paddingVertical: hp('1.2%'),
-    paddingHorizontal: wp('8%'),
+    backgroundColor: colors.gray[200],
+    paddingVertical: spacing.md,
+    paddingHorizontal: wp(10),
     borderRadius: borderRadius.md,
-    marginTop: hp('2.5%'),
-    elevation: 3,
-    shadowColor: '#bdc3c7',
-    shadowOffset: { width: 0, height: hp('0.6%') },
-    shadowOpacity: 0.2,
-    shadowRadius: wp('2%'),
+    marginTop: spacing.lg,
+    ...shadows.small,
   },
   changeLanguageText: {
-    fontSize: fontSize(16),
-    color: '#212529',
+    fontSize: typography.h6,
+    color: colors.primary,
     fontWeight: '600',
     textAlign: 'center',
   },

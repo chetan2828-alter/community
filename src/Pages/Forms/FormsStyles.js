@@ -1,56 +1,60 @@
-import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { 
-  widthPercentageToDP as wp, 
-  heightPercentageToDP as hp 
-} from 'react-native-responsive-screen';
-import { fontSize, spacing, borderRadius } from '../../utils/responsiveHelper';
+  wp, hp, fontSize, spacing, borderRadius, getSafeAreaTop,
+  colors, typography, shadows 
+} from '../../utils/responsiveHelper';
 
 const FormsStyle = StyleSheet.create({
   container: {
     flex: 1,
     padding: spacing.lg,
-    backgroundColor: '#f8f9fa',
-    paddingTop: Platform.OS === 'ios' ? hp('6%') : StatusBar.currentHeight + hp('2%'),
+    backgroundColor: colors.gray[50],
+    paddingTop: getSafeAreaTop() + spacing.lg,
   },
   progressContainer: {
-    marginTop: hp('2.5%'),
+    marginTop: spacing.lg,
   },
   stepContent: {
     flex: 1,
-    paddingVertical: hp('2.5%'),
+    paddingVertical: spacing.xl,
   },
   label: {
-    fontSize: fontSize(16),
-    fontWeight: 'bold',
-    color: '#4a4a4a',
-    marginBottom: hp('1%'),
+    fontSize: typography.h6,
+    fontWeight: '700',
+    color: colors.gray[700],
+    marginBottom: spacing.sm,
   },
   input: {
     width: '100%',
-    height: hp('6%'),
-    backgroundColor: '#ffffff',
-    borderColor: '#ced4da',
-    borderWidth: 1,
-    borderRadius: borderRadius.md,
+    height: hp(6.5),
+    backgroundColor: colors.white,
+    borderColor: colors.gray[300],
+    borderWidth: 2,
+    borderRadius: borderRadius.lg,
     paddingHorizontal: spacing.md,
-    marginBottom: hp('2.5%'),
-    fontSize: fontSize(14),
-    color: '#212529',
+    marginBottom: spacing.lg,
+    fontSize: typography.body,
+    color: colors.primary,
+    ...shadows.small,
   },
   inputPlaceholder: {
-    color: '#6c757d',
+    color: colors.gray[500],
   },
   button: {
-    backgroundColor: '#007bff',
-    borderRadius: borderRadius.md,
-    paddingVertical: hp('1.5%'),
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.lg,
+    paddingVertical: spacing.lg,
     alignItems: 'center',
-    marginTop: hp('2.5%'),
+    marginTop: spacing.xl,
+    ...shadows.medium,
   },
   buttonText: {
-    color: '#ffffff',
-    fontSize: fontSize(16),
-    fontWeight: '600',
+    color: colors.white,
+    fontSize: typography.h6,
+    fontWeight: '700',
+  },
+  inputGroup: {
+    marginBottom: spacing.lg,
   },
 });
 
