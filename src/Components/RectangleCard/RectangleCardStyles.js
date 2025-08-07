@@ -1,49 +1,78 @@
 import { StyleSheet } from 'react-native';
 import { 
-  wp, hp, fontSize, spacing, borderRadius, 
-  isSmallDevice, colors, typography 
+  wp, hp, fontSize, spacing, borderRadius, shadows,
+  colors, typography, iconSize
 } from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
-  loaderContainer: {
-    paddingVertical: spacing.md,
-    alignItems: 'center',
+  container: {
+    backgroundColor: colors.white,
+    paddingBottom: spacing.md,
   },
+  
+  loaderContainer: {
+    paddingVertical: spacing.xl,
+    alignItems: 'center',
+    backgroundColor: colors.white,
+  },
+  
   flatListContainer: {
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
   },
+  
   rectangleCard: {
-    paddingVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.xl,
     borderRadius: borderRadius.xl,
-    marginHorizontal: spacing.xs,
-    minWidth: wp(isSmallDevice ? 20 : 22),
+    marginHorizontal: spacing.sm,
+    minWidth: wp(24),
     alignItems: 'center',
     justifyContent: 'center',
-    height: hp(5),
-  },
-  activeCard: {
-    backgroundColor: colors.white,
+    height: hp(6),
     borderWidth: 2,
+    position: 'relative',
+    ...shadows.xs,
+  },
+  
+  activeCard: {
+    backgroundColor: colors.primary,
     borderColor: colors.primary,
+    ...shadows.md,
+    transform: [{ scale: 1.05 }],
   },
+  
   inactiveCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: colors.background.secondary,
+    borderColor: colors.separator.nonOpaque,
   },
+  
   cardText: {
-    fontSize: fontSize(isSmallDevice ? 11 : 12),
+    fontSize: typography.subhead,
     fontWeight: '700',
+    letterSpacing: 0.3,
+    textAlign: 'center',
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
   },
+  
   activeText: {
-    color: colors.primary,
-  },
-  inactiveText: {
     color: colors.white,
+  },
+  
+  inactiveText: {
+    color: colors.text.secondary,
+  },
+  
+  activeIndicator: {
+    position: 'absolute',
+    bottom: -spacing.sm,
+    left: '50%',
+    marginLeft: -spacing.md,
+    width: spacing.lg,
+    height: spacing.xs,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.xs,
+    ...shadows.sm,
   },
 });
 

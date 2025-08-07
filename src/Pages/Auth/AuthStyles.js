@@ -1,229 +1,293 @@
 import { StyleSheet, Platform } from "react-native";
 import { 
   wp, hp, fontSize, spacing, borderRadius, getSafeAreaTop, 
-  colors, typography, shadows, isSmallDevice 
+  colors, typography, shadows, inputStyles, buttonStyles, layout
 } from '../../utils/responsiveHelper';
 
 export default StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor: colors.white,
-    paddingBottom: spacing.lg,
+    backgroundColor: colors.background.grouped,
   },
+  
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    paddingHorizontal: spacing.lg,
-    justifyContent: 'center',
+    backgroundColor: colors.background.grouped,
   },
+  
   header: {
-    width: '100%',
-    marginTop: getSafeAreaTop() + spacing.lg,
-    marginBottom: spacing.md,
+    backgroundColor: colors.white,
+    paddingTop: getSafeAreaTop() + spacing.xl,
+    paddingBottom: spacing.xl,
+    paddingHorizontal: spacing.xl,
+    alignItems: 'center',
+    ...shadows.sm,
   },
+  
   logo: {
-    fontSize: typography.h1,
-    fontWeight: "900",
+    fontSize: typography.largeTitle,
+    fontWeight: '800',
     textAlign: "center",
-    color: colors.dark,
+    color: colors.text.primary,
     marginBottom: spacing.xl,
-    marginTop: spacing.lg,
+    letterSpacing: -1,
   },
+  
   logoBold: {
-    color: colors.black,
+    color: colors.primary,
     fontWeight: "900",
   },
+  
   logoLight: {
-    color: colors.gray[600],
+    color: colors.text.secondary,
     fontWeight: "600",
   },
+  
   toggleContainer: {
     flexDirection: "row",
-    backgroundColor: colors.gray[100],
-    borderRadius: borderRadius.xxl,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.xl,
     overflow: "hidden",
-    width: wp(80),
-    height: hp(6.5),
-    alignSelf: 'center',
-    marginBottom: spacing.xl,
-    ...shadows.small,
+    width: wp(75),
+    height: layout.buttonHeight,
+    ...shadows.xs,
   },
+  
   toggle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.xs,
+    marginVertical: spacing.xs,
   },
+  
   activeToggle: {
-    backgroundColor: colors.primary,
+    backgroundColor: colors.white,
+    ...shadows.sm,
   },
+  
   toggleText: {
-    fontSize: typography.h6,
+    fontSize: typography.subhead,
     fontWeight: "600",
-    color: colors.gray[600],
+    color: colors.text.secondary,
+    letterSpacing: 0.1,
   },
+  
   activeToggleText: {
-    color: colors.white,
+    color: colors.primary,
+    fontWeight: '700',
   },
+  
   formContainer: {
-    width: "100%",
-    marginBottom: spacing.lg,
+    backgroundColor: colors.white,
+    marginTop: spacing.lg,
+    marginHorizontal: spacing.lg,
+    borderRadius: borderRadius.xl,
+    padding: spacing.xl,
+    ...shadows.md,
   },
+  
   sectionTitle: {
-    fontSize: typography.body,
+    fontSize: typography.headline,
     fontWeight: "600",
-    color: colors.gray[700],
-    marginBottom: spacing.sm,
-    marginLeft: spacing.sm,
+    color: colors.text.primary,
+    marginBottom: spacing.md,
+    letterSpacing: -0.2,
   },
+  
   genderToggleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: spacing.lg,
-    gap: spacing.sm,
+    marginBottom: spacing.xl,
+    gap: spacing.md,
   },
+  
   genderOption: {
     flex: 1,
-    paddingVertical: spacing.md,
-    borderRadius: borderRadius.xxl,
+    paddingVertical: spacing.lg,
+    borderRadius: borderRadius.xl,
     borderWidth: 2,
-    borderColor: colors.gray[300],
-    backgroundColor: colors.gray[50],
+    borderColor: colors.separator.opaque,
+    backgroundColor: colors.background.secondary,
     alignItems: "center",
-    ...shadows.small,
+    ...shadows.xs,
   },
+  
   genderSelected: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
+    ...shadows.md,
   },
+  
   genderText: {
-    color: colors.gray[600],
+    color: colors.text.secondary,
     fontWeight: "600",
-    fontSize: typography.h6,
+    fontSize: typography.body,
+    letterSpacing: 0.1,
   },
+  
   genderSelectedText: {
     color: colors.white,
-    fontWeight: "600",
-    fontSize: typography.h6,
+    fontWeight: "700",
   },
+  
   inputRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: spacing.lg,
-    gap: spacing.sm,
+    marginBottom: spacing.xl,
+    gap: spacing.md,
   },
+  
   nameInputContainer: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: colors.gray[300],
-    borderRadius: borderRadius.lg,
-    paddingHorizontal: spacing.md,
-    backgroundColor: colors.white,
-    height: hp(6.5),
+    ...inputStyles.default,
+    height: layout.inputHeight,
     justifyContent: "center",
-    ...shadows.small,
   },
+  
   nameInput: {
-    fontSize: typography.h6,
-    color: colors.dark,
+    fontSize: typography.body,
+    color: colors.text.primary,
     paddingVertical: 0,
+    fontWeight: '500',
   },
+  
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    borderWidth: 2,
-    borderColor: colors.gray[300],
-    borderRadius: borderRadius.lg,
-    paddingHorizontal: spacing.md,
-    marginBottom: spacing.lg,
-    height: hp(6.5),
-    backgroundColor: colors.white,
-    ...shadows.small,
+    ...inputStyles.default,
+    marginBottom: spacing.xl,
+    height: layout.inputHeight,
+    paddingHorizontal: spacing.lg,
   },
+  
   input: {
     flex: 1,
-    fontSize: typography.h6,
-    color: colors.dark,
-    paddingVertical: spacing.sm,
-    marginLeft: spacing.sm,
+    fontSize: typography.body,
+    color: colors.text.primary,
+    paddingVertical: spacing.md,
+    marginLeft: spacing.md,
+    fontWeight: '500',
   },
+  
+  eyeButton: {
+    padding: spacing.sm,
+    borderRadius: borderRadius.md,
+  },
+  
   actionButton: {
-    backgroundColor: colors.primary,
-    paddingVertical: spacing.lg,
-    borderRadius: borderRadius.lg,
-    alignItems: "center",
-    marginTop: spacing.lg,
-    marginBottom: spacing.md,
-    ...shadows.medium,
+    ...buttonStyles.primary,
+    marginTop: spacing.xl,
+    marginBottom: spacing.lg,
+    height: layout.buttonHeight + spacing.md,
   },
+  
+  disabledButton: {
+    backgroundColor: colors.gray[400],
+    ...shadows.none,
+  },
+  
   actionButtonText: {
     color: colors.white,
     fontWeight: "700",
-    fontSize: typography.h6,
-  },
-  privacyPolicyContainer: {
-    marginTop: spacing.lg,
-    paddingHorizontal: spacing.md,
-  },
-  privacyPolicyText: {
-    fontSize: fontSize(12),
-    color: colors.gray[600],
-    textAlign: "center",
-    lineHeight: fontSize(18),
-  },
-  privacyPolicyLink: {
-    color: colors.primary,
-    textDecorationLine: "underline",
-    fontWeight: '600',
-  },
-  errorText: {
-    color: colors.danger,
     fontSize: typography.body,
-    textAlign: "center",
-    marginBottom: spacing.md,
-    marginTop: spacing.sm,
+    letterSpacing: 0.2,
   },
-  headerCentered: {
-    alignItems: 'center',
-  },
-  toggleContainerCentered: {
-    alignSelf: 'center',
-  },
+  
   termsContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: spacing.lg,
+    alignItems: 'flex-start',
+    marginVertical: spacing.xl,
+    paddingHorizontal: spacing.sm,
   },
+  
   checkbox: {
     width: wp(5),
     height: wp(5),
     borderWidth: 2,
-    borderColor: colors.gray[400],
-    borderRadius: borderRadius.xs,
+    borderColor: colors.separator.opaque,
+    borderRadius: borderRadius.sm,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: spacing.sm,
+    marginRight: spacing.md,
+    marginTop: spacing.xs,
   },
+  
   checkboxChecked: {
     backgroundColor: colors.primary,
     borderColor: colors.primary,
   },
+  
   checkboxCheckmark: {
     color: colors.white,
     fontWeight: 'bold',
     fontSize: fontSize(12),
   },
+  
   termsText: {
-    fontSize: typography.body,
-    color: colors.gray[600],
+    fontSize: typography.footnote,
+    color: colors.text.secondary,
     flex: 1,
-    lineHeight: fontSize(18),
+    lineHeight: typography.footnote * 1.4,
+    fontWeight: '400',
   },
+  
   termsLink: {
-    color: colors.info,
-    textDecorationLine: 'underline',
+    color: colors.primary,
     fontWeight: '600',
   },
-  disabledButton: {
-    opacity: 0.6,
+  
+  errorText: {
+    color: colors.danger,
+    fontSize: typography.subhead,
+    textAlign: "center",
+    marginBottom: spacing.lg,
+    marginTop: spacing.sm,
+    fontWeight: '500',
+    backgroundColor: colors.danger + '10',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.danger + '30',
+  },
+  
+  // Form sections
+  formSection: {
+    marginBottom: spacing.xl,
+  },
+  
+  sectionDivider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.separator.nonOpaque,
+    marginVertical: spacing.xl,
+  },
+  
+  // Password strength indicator
+  passwordStrength: {
+    flexDirection: 'row',
+    marginTop: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  
+  strengthBar: {
+    flex: 1,
+    height: spacing.xs,
+    backgroundColor: colors.background.secondary,
+    marginHorizontal: spacing.xs,
+    borderRadius: borderRadius.xs,
+  },
+  
+  strengthBarActive: {
+    backgroundColor: colors.success,
+  },
+  
+  strengthBarWeak: {
+    backgroundColor: colors.warning,
+  },
+  
+  strengthBarStrong: {
+    backgroundColor: colors.success,
   },
 });

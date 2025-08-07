@@ -1,54 +1,96 @@
-import { StyleSheet, Platform, StatusBar } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { 
   wp, hp, fontSize, spacing, borderRadius, shadows, 
-  getSafeAreaTop, colors, iconSize 
+  getSafeAreaTop, colors, typography, iconSize, layout
 } from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.md,
+    backgroundColor: colors.white,
     paddingTop: getSafeAreaTop(),
-    paddingBottom: spacing.md,
-    ...shadows.large,
-    borderBottomLeftRadius: borderRadius.xl,
-    borderBottomRightRadius: borderRadius.xl,
+    paddingBottom: spacing.lg,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.separator.nonOpaque,
+    ...shadows.sm,
   },
+  
+  titleContainer: {
+    alignItems: 'center',
+    paddingHorizontal: spacing.xl,
+    marginBottom: spacing.lg,
+  },
+  
+  appTitle: {
+    fontSize: typography.largeTitle,
+    fontWeight: '800',
+    color: colors.text.primary,
+    letterSpacing: -1,
+  },
+  
   topRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: spacing.md,
+    paddingHorizontal: spacing.xl,
+    marginBottom: spacing.lg,
   },
+  
   profileContainer: {
-    width: wp(14),
-    height: wp(14),
+    width: layout.avatarSizes.lg,
+    height: layout.avatarSizes.lg,
     borderRadius: borderRadius.round,
     overflow: 'hidden',
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.secondary,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
-    borderColor: '#FFD700',
-    ...shadows.small,
+    borderColor: colors.primary,
+    ...shadows.md,
   },
+  
   profileImage: {
     width: '100%',
     height: '100%',
     borderRadius: borderRadius.round,
   },
+  
   iconGroup: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: colors.background.secondary,
     borderRadius: borderRadius.xl,
-    paddingVertical: spacing.xs,
-    paddingHorizontal: spacing.sm,
-  },
-  iconContainer: {
-    paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    borderRadius: borderRadius.md,
+    paddingHorizontal: spacing.md,
+    ...shadows.xs,
+  },
+  
+  iconContainer: {
+    position: 'relative',
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.xs,
+  },
+  
+  notificationBadge: {
+    position: 'absolute',
+    top: spacing.sm,
+    right: spacing.sm,
+    backgroundColor: colors.danger,
+    borderRadius: borderRadius.round,
+    width: wp(4.5),
+    height: wp(4.5),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.white,
+    ...shadows.sm,
+  },
+  
+  badgeText: {
+    fontSize: fontSize(10),
+    color: colors.white,
+    fontWeight: '800',
   },
 });
 
