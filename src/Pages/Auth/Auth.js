@@ -382,6 +382,7 @@ const Auth = () => {
             </View>
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            }
 
             <View style={styles.termsContainer}>
               <CustomCheckbox 
