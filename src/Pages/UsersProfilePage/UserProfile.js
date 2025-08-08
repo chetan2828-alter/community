@@ -166,7 +166,9 @@ const UserProfile = () => {
           <View style={styles.basicInfo}>
             <Text style={styles.ageText}>{age} years old</Text>
             {gender && <Text style={styles.genderText}>• {gender}</Text>}
+            }
             {maritalStatus && <Text style={styles.statusText}>• {maritalStatus}</Text>}
+            }
           </View>
 
           <View style={styles.communityBadge}>
