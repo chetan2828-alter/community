@@ -1,50 +1,38 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Modal } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { 
+  colors, spacing, borderRadius, typography, iconSize, 
+  shadows, wp, hp 
+} from '../../utils/responsiveHelper';
+import styles from './ValidationStyles';
 
-const Validation = ({ loading, success }) => {
+const Validation = ({ loading, success, visible = true }) => {
+  if (!visible || (!loading && !success)) return null;
+
   return (
-    <View style={styles.container}>
-      {loading ? (
-        <View style={styles.card}>
-          <ActivityIndicator size="large" color="#0000ff" />
-          <Text style={styles.text}>Sending to the backend...</Text>
+    <Modal transparent visible={visible} animationType="fade">
+      <View style={styles.overlay}>
+        <View style={styles.container}>
+          {loading ? (
+            <View style={styles.content}>
+              <ActivityIndicator size="large" color={colors.primary} />
+              <Text style={styles.title}>Processing...</Text>
+              <Text style={styles.subtitle}>Please wait while we save your information</Text>
+            </View>
+          ) : success ? (
+            <View style={styles.content}>
+              <View style={styles.successIcon}>
+                <Ionicons name="checkmark" size={iconSize.xl} color={colors.white} />
+              </View>
+              <Text style={styles.title}>Success!</Text>
+              <Text style={styles.subtitle}>Your information has been saved successfully</Text>
+            </View>
+          ) : null}
         </View>
-      ) : (
-        success && (
-          <View style={styles.card}>
-            <Text style={styles.text}>Data submitted successfully!</Text>
-          </View>
-        )
-      )}
-    </View>
+      </View>
+    </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 100,
-    left: 0,
-    right: 0,
-    zIndex: 1,
-    alignItems: 'center',
-  },
-  card: {
-    width: 250,
-    height: 150,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
-  },
-  text: {
-    marginTop: 10,
-    textAlign: 'center',
-    fontSize: 16,
-  },
-});
 
 export default Validation;

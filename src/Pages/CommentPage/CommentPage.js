@@ -1,258 +1,3 @@
-
-
-// by gtppp modification 
-
-// import React, { useEffect, useState } from 'react';
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   FlatList,
-//   Alert,
-//   Platform,
-//   KeyboardAvoidingView,
-// } from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
-
-// const CommentsPage = ({ route }) => {
-//   const { comments: initialComments = [], postId, postUploaderId } = route.params;
-
-//   const [commentText, setCommentText] = useState('');
-//   const [comments, setComments] = useState(initialComments);
-//   const [userId, setUserId] = useState(null);
-
-//   useEffect(() => {
-//     const getUserId = async () => {
-//       const id = await AsyncStorage.getItem('userId');
-//       setUserId(Number(id));
-//     };
-//     getUserId();
-//   }, []);
-
-//   const fetchComments = async () => {
-//     try {
-//       const response = await fetch(`http://192.168.1.116:8080/api/users/comment/${postId}`);
-//       const text = await response.text();
-
-//       if (text.trim()) {
-//         const data = JSON.parse(text);
-//         setComments(data);
-//       } else {
-//         console.warn('Empty response from server.');
-//         setComments([]);
-//       }
-//     } catch (error) {
-//       console.error('Error fetching comments:', error);
-//     }
-//   };
-
-//   const handleAddComment = async () => {
-//     if (!commentText.trim()) return;
-
-//     try {
-//       const token = await AsyncStorage.getItem('token');
-
-//       const response = await fetch(`http://192.168.1.116:8080/api/users/comment/${postId}`, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({
-//           text: commentText,
-//         }),
-//       });
-
-//       if (response.ok) {
-//         setCommentText('');
-//         await fetchComments(); // Refresh comment list
-//       } else {
-//         const errorText = await response.text();
-//         console.error('Failed to add comment:', errorText);
-//         Alert.alert('Error', 'Failed to add comment');
-//       }
-//     } catch (error) {
-//       console.error('Error adding comment:', error);
-//     }
-//   };
-
-//   const handleDeleteComment = (commentId) => {
-//     Alert.alert(
-//       'Delete Comment',
-//       'Are you sure you want to delete this comment?',
-//       [
-//         { text: 'Cancel', style: 'cancel' },
-//         {
-//           text: 'Delete',
-//           style: 'destructive',
-//           onPress: async () => {
-//             try {
-//               const token = await AsyncStorage.getItem('token');
-//               await fetch(`http://192.168.1.116:8080/api/users/comment/${commentId}`, {
-//                 method: 'DELETE',
-//                 headers: {
-//                   Authorization: `Bearer ${token}`,
-//                 },
-//               });
-
-//               setComments(prev => prev.filter(c => c.commentId !== commentId));
-//             } catch (error) {
-//               console.error('Error deleting comment:', error);
-//               Alert.alert('Failed', 'You are not authorized to delete this comment.');
-//             }
-//           },
-//         },
-//       ]
-//     );
-//   };
-
-//   const formatTime = (timestamp) => {
-//     const date = new Date(timestamp);
-//     return date.toLocaleString('en-IN', {
-//       day: '2-digit',
-//       month: 'short',
-//       year: '2-digit',
-//       hour: '2-digit',
-//       minute: '2-digit',
-//     });
-//   };
-
-//   const renderComment = ({ item }) => {
-//     const isCurrentUser = item.commenterId === userId;
-//     const isPostOwner = userId === postUploaderId;
-
-//     return (
-//       <View style={styles.commentItem}>
-//         <View style={styles.commentHeader}>
-//           <Text style={styles.commentUser}>{item.commenterName}</Text>
-//           <Text style={styles.commentTime}>{formatTime(item.commentedAt)}</Text>
-//         </View>
-//         <Text style={styles.commentText}>{item.text}</Text>
-
-//         {(isCurrentUser || isPostOwner) && (
-//           <TouchableOpacity
-//             onPress={() => handleDeleteComment(item.commentId)}
-//             style={styles.deleteBtn}
-//           >
-//             <Ionicons name="trash-outline" size={18} color="red" />
-//             <Text style={styles.deleteText}>Delete</Text>
-//           </TouchableOpacity>
-//         )}
-//       </View>
-//     );
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <FlatList
-//         data={comments}
-//         keyExtractor={(item) => item.commentId.toString()}
-//         renderItem={renderComment}
-//         contentContainerStyle={styles.commentList}
-//       />
-
-//       <KeyboardAvoidingView
-//         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-//         keyboardVerticalOffset={80}
-//         style={styles.inputContainer}
-//       >
-//         <TextInput
-//           style={styles.input}
-//           placeholder="Add a comment..."
-//           placeholderTextColor="#888"
-//           value={commentText}
-//           onChangeText={setCommentText}
-//         />
-//         <TouchableOpacity style={styles.button} onPress={handleAddComment}>
-//           <Text style={styles.buttonText}>Post</Text>
-//         </TouchableOpacity>
-//       </KeyboardAvoidingView>
-//     </View>
-//   );
-// };
-
-// const styles = {
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#242526',
-//     padding: 16,
-//   },
-//   commentList: {
-//     paddingBottom: 16,
-//   },
-//   commentItem: {
-//     backgroundColor: '#3a3b3c',
-//     padding: 12,
-//     borderRadius: 10,
-//     marginBottom: 12,
-//     position: 'relative',
-//   },
-//   commentHeader: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//   },
-//   commentUser: {
-//     color: '#fff',
-//     fontWeight: 'bold',
-//     fontSize: 14,
-//   },
-//   commentTime: {
-//     color: '#aaa',
-//     fontSize: 12,
-//   },
-//   commentText: {
-//     color: '#e4e6eb',
-//     fontSize: 14,
-//     marginTop: 6,
-//   },
-//   deleteBtn: {
-//     position: 'absolute',
-//     right: 10,
-//     bottom: 10,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   deleteText: {
-//     color: 'red',
-//     marginLeft: 4,
-//     fontSize: 12,
-//   },
-//   inputContainer: {
-//     flexDirection: 'row',
-//     borderTopWidth: 1,
-//     borderTopColor: '#444',
-//     backgroundColor: '#242526',
-//     paddingHorizontal: 10,
-//     paddingVertical: 8,
-//     alignItems: 'center',
-//   },
-//   input: {
-//     flex: 1,
-//     backgroundColor: '#3a3b3c',
-//     color: '#fff',
-//     paddingHorizontal: 14,
-//     paddingVertical: 8,
-//     borderRadius: 20,
-//     marginRight: 10,
-//   },
-//   button: {
-//     backgroundColor: '#007bff',
-//     paddingVertical: 8,
-//     paddingHorizontal: 16,
-//     borderRadius: 20,
-//   },
-//   buttonText: {
-//     color: '#fff',
-//     fontWeight: 'bold',
-//   },
-// };
-
-// export default CommentsPage;
-
-
-
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -260,33 +5,32 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   Image,
   KeyboardAvoidingView,
   Platform,
   Alert,
-  SafeAreaView,
   StatusBar,
-  Modal,
+  ActivityIndicator,
 } from 'react-native';
 import { Ionicons, Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { 
-  widthPercentageToDP as wp, 
-  heightPercentageToDP as hp 
-} from 'react-native-responsive-screen';
-import { fontSize, spacing, borderRadius, isSmallDevice } from '../../utils/responsiveHelper';
+  colors, spacing, borderRadius, typography, iconSize, 
+  shadows, layout, wp, hp 
+} from '../../utils/responsiveHelper';
 import { addComment } from '../../utils/addComment';
 import { deleteComment } from '../../utils/deleteComment';
+import styles from './CommentPageStyles';
 
 const CommentsPage = ({ route }) => {
   const navigation = useNavigation();
-  const { comments: initialComments = [], postId } = route.params;
+  const { comments: initialComments = [], postId, postUploaderId } = route.params;
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [focusedComment, setFocusedComment] = useState(null); // Modal focus
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -304,14 +48,17 @@ const CommentsPage = ({ route }) => {
 
   const handleSubmitComment = async () => {
     if (!commentText.trim()) return;
+    
+    setLoading(true);
     try {
       const newComment = await addComment(postId, userId, commentText);
       const generatedKey = `temp-${Date.now()}`;
+      
       setComments((prev) => [
         ...prev,
         {
           ...newComment,
-          commenterName: 'you',
+          commenterName: 'You',
           commenterId: userId,
           commenterImageUrl: null,
           commentedAt: new Date().toISOString(),
@@ -321,32 +68,34 @@ const CommentsPage = ({ route }) => {
       ]);
       setCommentText('');
     } catch (error) {
+      Alert.alert('Error', 'Failed to add comment. Please try again.');
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-const handleDeleteComment = (commentId) => {
-  Alert.alert('Delete Comment', 'Are you sure you want to delete this comment?', [
-    { text: 'Cancel', style: 'cancel' },
-    {
-      text: 'Delete',
-      style: 'destructive',
-      onPress: async () => {
-        try {
-          const response = await deleteComment(commentId);
-          console.log('Deleted:', response);
-
-          // Remove from local UI
-          setComments((prev) => prev.filter((c) => c.commentId !== commentId));
-          setFocusedComment(null);
-        } catch (error) {
-          console.error('Error deleting comment:', error.message);
-          Alert.alert('Failed', 'You are not authorized to delete this comment');
-        }
-      },
-    },
-  ]);
-};
+  const handleDeleteComment = (commentId) => {
+    Alert.alert(
+      'Delete Comment', 
+      'Are you sure you want to delete this comment?', 
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteComment(commentId);
+              setComments((prev) => prev.filter((c) => c.commentId !== commentId));
+            } catch (error) {
+              Alert.alert('Error', 'You are not authorized to delete this comment');
+            }
+          },
+        },
+      ]
+    );
+  };
 
   const formatTime = (timestamp) => {
     const diffMs = Date.now() - new Date(timestamp).getTime();
@@ -354,251 +103,125 @@ const handleDeleteComment = (commentId) => {
     const diffHr = Math.floor(diffMin / 60);
     const diffDay = Math.floor(diffHr / 24);
 
-    if (diffMin < 1) return 'Just now';
-    if (diffMin < 60) return `${diffMin}m ago`;
-    if (diffHr < 24) return `${diffHr}h ago`;
-    return `${diffDay}d ago`;
+    if (diffMin < 1) return 'now';
+    if (diffMin < 60) return `${diffMin}m`;
+    if (diffHr < 24) return `${diffHr}h`;
+    return `${diffDay}d`;
   };
 
   const renderComment = ({ item }) => {
     const isCurrentUser = item.commenterId === userId;
-    const profileImage = item.commenterImageUrl || 'https://i.pravatar.cc/150?img=3';
+    const profileImage = item.commenterImageUrl || 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg';
 
     return (
-      <TouchableOpacity
-        style={styles.commentRow}
-        activeOpacity={0.9}
-        onLongPress={() => isCurrentUser && setFocusedComment(item)}
-      >
-        <Image source={{ uri: profileImage }} style={styles.avatar} />
-        <View style={styles.textSection}>
-          <Text style={styles.username}>{isCurrentUser ? 'you' : item.commenterName || 'anonymous'}</Text>
-          <Text style={styles.commentText}>{item.text || '(No text)'}</Text>
-          <View style={styles.metaRow}>
-            <Text style={styles.time}>{formatTime(item.commentedAt)}</Text>
-            <Text style={styles.replyText}>  Reply</Text>
+      <View style={styles.commentContainer}>
+        <TouchableOpacity style={styles.avatarContainer}>
+          <Image source={{ uri: profileImage }} style={styles.avatar} />
+        </TouchableOpacity>
+        
+        <View style={styles.commentContent}>
+          <View style={styles.commentBubble}>
+            <Text style={styles.username}>
+              {isCurrentUser ? 'You' : item.commenterName || 'Anonymous'}
+            </Text>
+            <Text style={styles.commentText}>{item.text || '(No text)'}</Text>
+          </View>
+          
+          <View style={styles.commentActions}>
+            <Text style={styles.timestamp}>{formatTime(item.commentedAt)}</Text>
+            <TouchableOpacity style={styles.replyButton}>
+              <Text style={styles.replyText}>Reply</Text>
+            </TouchableOpacity>
+            {isCurrentUser && (
+              <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => handleDeleteComment(item.commentId)}
+              >
+                <Text style={styles.deleteText}>Delete</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
-        <TouchableOpacity>
-          <Feather name="heart" size={18} color="#999" style={styles.heartIcon} />
+        
+        <TouchableOpacity style={styles.likeButton}>
+          <Ionicons name="heart-outline" size={iconSize.sm} color={colors.text.tertiary} />
         </TouchableOpacity>
-      </TouchableOpacity>
+      </View>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#fff" barStyle="dark-content" />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
 
-      {/* Back Button and Header */}
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#000" />
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons name="arrow-back" size={iconSize.lg} color={colors.text.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Comments</Text>
+        <Text style={styles.headerTitle}>Comments</Text>
+        <View style={styles.headerSpacer} />
       </View>
 
+      {/* Comments List */}
       <FlatList
         data={comments}
         renderItem={renderComment}
         keyExtractor={(item) => item._key}
-        contentContainerStyle={{ paddingBottom: 80 }}
+        contentContainerStyle={styles.commentsList}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Ionicons name="chatbubble-outline" size={iconSize.xxl * 2} color={colors.text.tertiary} />
+            <Text style={styles.emptyText}>No comments yet</Text>
+            <Text style={styles.emptySubtext}>Be the first to comment</Text>
+          </View>
+        )}
       />
 
+      {/* Input Container */}
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={80}
-        style={styles.inputContainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <TouchableOpacity>
-          <Ionicons name="happy-outline" size={24} color="#666" style={{ marginRight: 10 }} />
-        </TouchableOpacity>
-        <TextInput
-          value={commentText}
-          onChangeText={setCommentText}
-          placeholder="Add a comment..."
-          placeholderTextColor="#999"
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={handleSubmitComment} style={styles.sendBtn}>
-          <Ionicons name="send" size={18} color="#fff" />
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-
-      {/* Modal for Focused Comment */}
-      <Modal visible={!!focusedComment} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalCard}>
-            <Image
-              source={{
-                uri: focusedComment?.commenterImageUrl || 'https://i.pravatar.cc/150?img=3',
-              }}
-              style={styles.modalAvatar}
-            />
-            <Text style={styles.modalUsername}>{focusedComment?.commenterName || 'you'}</Text>
-            <Text style={styles.modalText}>{focusedComment?.text}</Text>
-            <TouchableOpacity
-              onPress={() => handleDeleteComment(focusedComment.commentId)}
-              style={styles.modalDeleteBtn}
-            >
-              <Feather name="trash-2" size={20} color="#d00" />
-              <Text style={styles.modalDeleteText}>Delete</Text>
+        <View style={styles.inputContainer}>
+          <View style={styles.inputWrapper}>
+            <TouchableOpacity style={styles.emojiButton}>
+              <Ionicons name="happy-outline" size={iconSize.md} color={colors.text.tertiary} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setFocusedComment(null)}>
-              <Text style={styles.modalClose}>Close</Text>
+            
+            <TextInput
+              value={commentText}
+              onChangeText={setCommentText}
+              placeholder="Add a comment..."
+              placeholderTextColor={colors.text.tertiary}
+              style={styles.textInput}
+              multiline
+              maxLength={500}
+            />
+            
+            <TouchableOpacity 
+              style={[
+                styles.sendButton,
+                (!commentText.trim() || loading) && styles.sendButtonDisabled
+              ]}
+              onPress={handleSubmitComment}
+              disabled={!commentText.trim() || loading}
+            >
+              {loading ? (
+                <ActivityIndicator size="small" color={colors.white} />
+              ) : (
+                <Ionicons name="send" size={iconSize.sm} color={colors.white} />
+              )}
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 export default CommentsPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    paddingTop: Platform.OS === 'ios' ? hp('6%') : StatusBar.currentHeight + hp('2%'),
-    paddingBottom: hp('1.2%'),
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
-  },
-  headerText: {
-    fontSize: fontSize(18),
-    fontWeight: '600',
-    marginLeft: spacing.md,
-  },
-  commentRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: hp('1.5%'),
-    paddingHorizontal: spacing.md,
-  },
-  avatar: {
-    width: wp(isSmallDevice ? '9%' : '8%'),
-    height: wp(isSmallDevice ? '9%' : '8%'),
-    borderRadius: wp('4.5%'),
-    marginRight: spacing.sm,
-  },
-  textSection: {
-    flex: 1,
-  },
-  username: {
-    fontWeight: '600',
-    color: '#000',
-    fontSize: fontSize(14),
-    marginBottom: hp('0.2%'),
-  },
-  commentText: {
-    fontSize: fontSize(14),
-    color: '#222',
-    marginBottom: hp('0.5%'),
-  },
-  metaRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-  },
-  time: {
-    fontSize: fontSize(12),
-    color: '#999',
-  },
-  replyText: {
-    fontSize: fontSize(12),
-    color: '#555',
-    marginLeft: spacing.sm,
-  },
-  heartIcon: {
-    marginLeft: spacing.sm,
-    marginTop: hp('0.2%'),
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: spacing.md,
-    paddingVertical: hp('1.2%'),
-    borderTopWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    paddingBottom: Platform.OS === 'ios' ? hp('4%') : hp('1.2%'),
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#f1f1f1',
-    borderRadius: borderRadius.xl,
-    paddingHorizontal: spacing.md,
-    paddingVertical: hp('1%'),
-    fontSize: fontSize(14),
-    color: '#000',
-  },
-  sendBtn: {
-    marginLeft: spacing.sm,
-    backgroundColor: '#000',
-    borderRadius: borderRadius.xl,
-    padding: wp('2%'),
-  },
-
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalCard: {
-    backgroundColor: '#fff',
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    width: wp('85%'),
-    alignItems: 'center',
-  },
-  modalAvatar: {
-    width: wp('15%'),
-    height: wp('15%'),
-    borderRadius: wp('7.5%'),
-    marginBottom: hp('1.2%'),
-  },
-  modalUsername: {
-    fontSize: fontSize(16),
-    fontWeight: '600',
-    marginBottom: hp('0.7%'),
-  },
-  modalText: {
-    fontSize: fontSize(14),
-    color: '#222',
-    textAlign: 'center',
-    marginBottom: hp('1.5%'),
-  },
-  modalDeleteBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffe6e6',
-    paddingVertical: hp('0.7%'),
-    paddingHorizontal: wp('4%'),
-    borderRadius: borderRadius.md,
-    marginBottom: hp('1.2%'),
-  },
-  modalDeleteText: {
-    color: '#d00',
-    fontSize: fontSize(14),
-    fontWeight: '500',
-    marginLeft: wp('1.5%'),
-  },
-  modalClose: {
-    fontSize: fontSize(14),
-    color: '#555',
-    marginTop: hp('0.7%'),
-  },
-});

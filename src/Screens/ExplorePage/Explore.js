@@ -1,139 +1,3 @@
-// import React, { useState } from 'react';
-// import { View, Text, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
-// import * as ImagePicker from 'expo-image-picker';
-// import * as ImageManipulator from 'expo-image-manipulator';
-// import Icon from 'react-native-vector-icons/Feather';
-// import RNPickerSelect from 'react-native-picker-select';
-// import styles from './ExploreStyles'; // Assuming you have your styles here
-
-// const Explore = () => {
-//   const [selectedImages, setSelectedImages] = useState([]);
-//   const [caption, setCaption] = useState('');
-//   const [category, setCategory] = useState('Home');
-
-//   // Handle picking images and compressing them
-//   const handleImagePick = async () => {
-//     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-//     if (status !== 'granted') {
-//       alert('Permission to access gallery is required!');
-//       return;
-//     }
-
-//     const result = await ImagePicker.launchImageLibraryAsync({
-//       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-//       allowsMultipleSelection: true,
-//       quality: 1,
-//     });
-
-//     if (!result.canceled) {
-//       // Compress the selected images
-//       const compressedImages = await Promise.all(
-//         result.assets.map(async (image) => {
-//           const manipulatedImage = await ImageManipulator.manipulateAsync(
-//             image.uri,
-//             [{ resize: { width: 800 } }], // Resize image to 800px width
-//             { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG } // Compress to 70% quality
-//           );
-//           return manipulatedImage;
-//         })
-//       );
-
-//       setSelectedImages(compressedImages);
-//     }
-//   };
-
-//   // Handle posting the images to the backend
-//   const handlePost = async () => {
-//     const formData = new FormData();
-//     selectedImages.forEach((image, index) => {
-//       formData.append('images', {
-//         uri: image.uri,
-//         name: `image_${index}.jpg`,
-//         type: 'image/jpeg', // Change based on image format if necessary
-//       });
-//     });
-
-//     formData.append('caption', caption);
-//     formData.append('category', category);
-
-//     try {
-//       const response = await fetch('', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'multipart/form-data',
-//         },
-//         body: formData,
-//       });
-
-//       const data = await response.json();
-//       if (data.success) {
-//         alert('Post created successfully!');
-//       } else {
-//         alert('Failed to create post');
-//       }
-//     } catch (error) {
-//       console.error('Error posting:', error);
-//       alert('An error occurred while posting');
-//     }
-//   };
-
-//   return (
-//     <ScrollView contentContainerStyle={styles.container}>
-//       <Text style={styles.title}>Create a New Post</Text>
-
-//       {/* Image Picker */}
-//       <View style={styles.imagePicker}>
-//         {selectedImages.length > 0 ? (
-//           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-//             {selectedImages.map((image, index) => (
-//               <Image key={index} source={{ uri: image.uri }} style={styles.selectedImage} />
-//             ))}
-//           </ScrollView>
-//         ) : (
-//           <Text style={styles.addImageText}>Tap to Add Images</Text>
-//         )}
-//         <TouchableOpacity style={styles.pickImageButton} onPress={handleImagePick}>
-//           <Icon name="image" size={24} color="#fff" />
-//           <Text style={styles.pickImageText}>Pick Images</Text>
-//         </TouchableOpacity>
-//       </View>
-
-//       {/* Caption Input */}
-//       <TextInput
-//         style={styles.captionInput}
-//         placeholder="Write a caption..."
-//         placeholderTextColor="#888"
-//         value={caption}
-//         onChangeText={setCaption}
-//       />
-
-//       {/* Category Dropdown */}
-//       <View style={styles.categoryContainer}>
-//         <Text style={styles.categoryLabel}>Category</Text>
-//         <RNPickerSelect
-//           onValueChange={(value) => setCategory(value)}
-//           items={[
-//             { label: 'Home', value: 'Home' },
-//             { label: 'Marriage', value: 'Marriage' },
-//             { label: 'Anniversary', value: 'Anniversary' },
-//             { label: 'Deaths', value: 'Deaths' },
-//             { label: 'Newborn', value: 'Newborn' },
-//           ]}
-//           value={category}
-//           style={styles.categoryDropdown}
-//         />
-//       </View>
-
-//       {/* Post Button */}
-//       <TouchableOpacity style={styles.postButton} onPress={handlePost}>
-//         <Text style={styles.postButtonText}>Post</Text>
-//       </TouchableOpacity>
-//     </ScrollView>
-//   );
-// };
-
-// export default Explore;
-
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -142,20 +6,23 @@ import {
   Image,
   TextInput,
   ScrollView,
-  StyleSheet,
   ActivityIndicator,
   Platform,
   StatusBar,
+  Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
-import Icon from 'react-native-vector-icons/Feather';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { 
-  widthPercentageToDP as wp, 
-  heightPercentageToDP as hp 
-} from 'react-native-responsive-screen';
-import { fontSize, spacing, borderRadius, isSmallDevice } from '../../utils/responsiveHelper';
+  colors, spacing, borderRadius, typography, iconSize, 
+  shadows, layout, getSafeAreaTop 
+} from '../../utils/responsiveHelper';
+import styles from './ExploreStyles';
 
 const Explore = () => {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -164,38 +31,40 @@ const Explore = () => {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState('');
   const [loadingCategories, setLoadingCategories] = useState(true);
-
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch('http://192.168.1.116:8080/api/fed-categories/feedcategories');
-      const json = await res.json();
-      const formatted = json.categories.map((cat) => ({
-        label: cat,
-        value: cat,
-      }));
-      setCategories(formatted);
-    } catch (err) {
-      console.error('Error fetching categories:', err);
-    } finally {
-      setLoadingCategories(false);
-    }
-  };
+  const [posting, setPosting] = useState(false);
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://192.168.1.116:8080/api/fed-categories/feedcategories');
+      const data = await response.json();
+      const formatted = data.categories.map((cat) => ({
+        label: cat,
+        value: cat,
+      }));
+      setCategories(formatted);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
+
   const handleImagePick = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      alert('Permission to access gallery is required!');
+      Alert.alert('Permission Required', 'Please grant permission to access your photo library.');
       return;
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsMultipleSelection: true,
-      quality: 1,
+      quality: 0.8,
+      aspect: [1, 1],
     });
 
     if (!result.canceled) {
@@ -203,8 +72,8 @@ const Explore = () => {
         result.assets.map(async (image) => {
           const manipulatedImage = await ImageManipulator.manipulateAsync(
             image.uri,
-            [{ resize: { width: 800 } }],
-            { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
+            [{ resize: { width: 1080 } }],
+            { compress: 0.8, format: ImageManipulator.SaveFormat.JPEG }
           );
           return manipulatedImage;
         })
@@ -213,233 +82,219 @@ const Explore = () => {
     }
   };
 
+  const removeImage = (index) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handlePost = async () => {
-    const formData = new FormData();
-    selectedImages.forEach((image, index) => {
-      formData.append('images', {
-        uri: image.uri,
-        name: `image_${index}.jpg`,
-        type: 'image/jpeg',
-      });
-    });
-    formData.append('caption', caption);
-    formData.append('category', category);
-    formData.append('tags', tags);
+    if (!caption.trim()) {
+      Alert.alert('Caption Required', 'Please add a caption to your post.');
+      return;
+    }
+    
+    if (!category) {
+      Alert.alert('Category Required', 'Please select a category for your post.');
+      return;
+    }
+
+    setPosting(true);
 
     try {
+      const token = await AsyncStorage.getItem('token');
+      const formData = new FormData();
+      
+      selectedImages.forEach((image, index) => {
+        formData.append('images', {
+          uri: image.uri,
+          name: `image_${index}.jpg`,
+          type: 'image/jpeg',
+        });
+      });
+      
+      formData.append('caption', caption);
+      formData.append('category', category);
+      formData.append('tags', tags);
+
       const response = await fetch('http://192.168.1.116:8080/api/posts', {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
         body: formData,
       });
 
-      const data = await response.json();
-      alert(data.success ? 'Post created successfully!' : 'Failed to create post');
+      if (response.ok) {
+        Alert.alert('Success', 'Post created successfully!');
+        // Reset form
+        setSelectedImages([]);
+        setCaption('');
+        setCategory('');
+        setTags('');
+      } else {
+        Alert.alert('Error', 'Failed to create post. Please try again.');
+      }
     } catch (error) {
       console.error('Error posting:', error);
-      alert('An error occurred while posting');
+      Alert.alert('Error', 'Network error. Please check your connection.');
+    } finally {
+      setPosting(false);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>Create a New Post</Text>
-
-        {/* Image Picker */}
-        <View style={styles.imagePicker}>
-          {selectedImages.length > 0 ? (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {selectedImages.map((image, index) => (
-                <Image key={index} source={{ uri: image.uri }} style={styles.selectedImage} />
-              ))}
-            </ScrollView>
-          ) : (
-            <Text style={styles.addImageText}>No images selected</Text>
-          )}
-          <TouchableOpacity style={styles.pickImageButton} onPress={handleImagePick}>
-            <Icon name="image" size={20} color="#fff" />
-            <Text style={styles.pickImageText}>Pick Images</Text>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+      
+      <KeyboardAvoidingView 
+        style={{ flex: 1 }} 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Create Post</Text>
+          <TouchableOpacity 
+            style={[styles.postButton, (!caption.trim() || !category) && styles.postButtonDisabled]}
+            onPress={handlePost}
+            disabled={!caption.trim() || !category || posting}
+          >
+            {posting ? (
+              <ActivityIndicator size="small" color={colors.white} />
+            ) : (
+              <Text style={styles.postButtonText}>Share</Text>
+            )}
           </TouchableOpacity>
         </View>
 
-        {/* Caption Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Write a caption..."
-          placeholderTextColor="#888"
-          value={caption}
-          onChangeText={setCaption}
-        />
+        <ScrollView 
+          style={styles.scrollContainer}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Image Picker Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Photos</Text>
+            
+            {selectedImages.length > 0 ? (
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.imageScrollContainer}
+              >
+                {selectedImages.map((image, index) => (
+                  <View key={index} style={styles.imageContainer}>
+                    <Image source={{ uri: image.uri }} style={styles.selectedImage} />
+                    <TouchableOpacity 
+                      style={styles.removeImageButton}
+                      onPress={() => removeImage(index)}
+                    >
+                      <Ionicons name="close" size={iconSize.sm} color={colors.white} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+                
+                {selectedImages.length < 10 && (
+                  <TouchableOpacity style={styles.addMoreButton} onPress={handleImagePick}>
+                    <Ionicons name="add" size={iconSize.lg} color={colors.text.tertiary} />
+                  </TouchableOpacity>
+                )}
+              </ScrollView>
+            ) : (
+              <TouchableOpacity style={styles.imagePicker} onPress={handleImagePick}>
+                <Ionicons name="camera-outline" size={iconSize.xxl} color={colors.text.tertiary} />
+                <Text style={styles.imagePickerText}>Add Photos</Text>
+                <Text style={styles.imagePickerSubtext}>Share up to 10 photos</Text>
+              </TouchableOpacity>
+            )}
+          </View>
 
-        {/* Tags Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Add tags (comma separated)"
-          placeholderTextColor="#888"
-          value={tags}
-          onChangeText={setTags}
-        />
+          {/* Caption Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Caption</Text>
+            <TextInput
+              style={styles.captionInput}
+              placeholder="What's on your mind?"
+              placeholderTextColor={colors.text.tertiary}
+              value={caption}
+              onChangeText={setCaption}
+              multiline
+              maxLength={2200}
+              textAlignVertical="top"
+            />
+            <Text style={styles.characterCount}>
+              {caption.length}/2200
+            </Text>
+          </View>
 
-        {/* Category Dropdown */}
-        <Text style={styles.dropdownLabel}>Category</Text>
-        {loadingCategories ? (
-          <ActivityIndicator color="#000" />
-        ) : (
-          <RNPickerSelect
-            onValueChange={(value) => setCategory(value)}
-            items={categories}
-            placeholder={{ label: 'Select Category', value: null }}
-            style={{
-              inputIOS: styles.dropdown,
-              inputAndroid: styles.dropdown,
-              placeholder: { color: '#aaa' },
-            }}
-            value={category}
-          />
-        )}
+          {/* Tags Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Tags</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Add tags (comma separated)"
+              placeholderTextColor={colors.text.tertiary}
+              value={tags}
+              onChangeText={setTags}
+              autoCapitalize="none"
+            />
+          </View>
 
-        {/* Post Button */}
-        <TouchableOpacity style={styles.postButton} onPress={handlePost}>
-          <Text style={styles.postButtonText}>Post</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          {/* Category Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Category *</Text>
+            {loadingCategories ? (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="small" color={colors.primary} />
+              </View>
+            ) : (
+              <View style={styles.pickerContainer}>
+                <RNPickerSelect
+                  onValueChange={(value) => setCategory(value)}
+                  items={categories}
+                  placeholder={{ 
+                    label: 'Select a category...', 
+                    value: null,
+                    color: colors.text.tertiary 
+                  }}
+                  style={{
+                    inputIOS: styles.pickerInput,
+                    inputAndroid: styles.pickerInput,
+                    placeholder: { color: colors.text.tertiary },
+                  }}
+                  value={category}
+                  useNativeAndroidPickerStyle={false}
+                  Icon={() => (
+                    <Ionicons 
+                      name="chevron-down" 
+                      size={iconSize.md} 
+                      color={colors.text.tertiary} 
+                      style={styles.pickerIcon}
+                    />
+                  )}
+                />
+              </View>
+            )}
+          </View>
+
+          {/* Privacy Section */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Privacy</Text>
+            <View style={styles.privacyOption}>
+              <View style={styles.privacyInfo}>
+                <Ionicons name="globe-outline" size={iconSize.md} color={colors.text.secondary} />
+                <View style={styles.privacyTextContainer}>
+                  <Text style={styles.privacyTitle}>Public</Text>
+                  <Text style={styles.privacySubtitle}>Anyone can see this post</Text>
+                </View>
+              </View>
+              <Ionicons name="chevron-forward" size={iconSize.sm} color={colors.text.tertiary} />
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff',
-    paddingVertical: hp('2.5%'),
-    paddingHorizontal: spacing.lg,
-    flexGrow: 1,
-    justifyContent: 'center',
-    paddingTop: Platform.OS === 'ios' ? hp('8%') : StatusBar.currentHeight + hp('4%'),
-  },
-  innerContainer: {
-    maxWidth: wp('90%'),
-    width: '100%',
-    alignSelf: 'center',
-  },
-  title: {
-    fontSize: fontSize(isSmallDevice ? 26 : 30),
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: hp('2.5%'),
-    textAlign: 'center',
-  },
-  imagePicker: {
-    backgroundColor: '#f1f1f1',
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    marginBottom: hp('3%'),
-    alignItems: 'center',
-  },
-  selectedImage: {
-    width: wp('25%'),
-    height: wp('25%'),
-    borderRadius: borderRadius.md,
-    marginRight: spacing.sm,
-  },
-  pickImageButton: {
-    flexDirection: 'row',
-    marginTop: hp('1.5%'),
-    backgroundColor: '#000',
-    paddingVertical: hp('1.2%'),
-    paddingHorizontal: wp('4%'),
-    borderRadius: borderRadius.sm,
-    alignItems: 'center',
-  },
-  pickImageText: {
-    color: '#fff',
-    marginLeft: spacing.sm,
-    fontWeight: '600',
-    fontSize: fontSize(14),
-  },
-  addImageText: {
-    color: '#666',
-    fontSize: fontSize(16),
-  },
-  input: {
-    backgroundColor: '#f9f9f9',
-    color: '#000',
-    padding: spacing.md,
-    borderRadius: borderRadius.md,
-    marginBottom: hp('2.5%'),
-    borderWidth: 1,
-    borderColor: '#ddd',
-    fontSize: fontSize(16),
-  },
-  dropdownLabel: {
-    color: '#333',
-    marginBottom: hp('0.7%'),
-    fontSize: fontSize(14),
-    marginTop: hp('0.7%'),
-  },
-  dropdown: {
-    backgroundColor: '#f9f9f9',
-    color: '#000',
-    paddingVertical: hp('1.5%'),
-    paddingHorizontal: spacing.md,
-    borderRadius: borderRadius.md,
-    fontSize: fontSize(16),
-    borderWidth: 1,
-    borderColor: '#ddd',
-    marginBottom: hp('3%'),
-  },
-  postButton: {
-    backgroundColor: '#000',
-    paddingVertical: hp('2%'),
-    borderRadius: borderRadius.md,
-    alignItems: 'center',
-    marginTop: hp('1.2%'),
-  },
-  postButtonText: {
-    color: '#fff',
-    fontSize: fontSize(16),
-    fontWeight: 'bold',
-  },
-});
-
 export default Explore;
-
-{
-/*
-my ui structure is like as soon my user logges in users token , userId is stored into async storage and then after there is user redirected to home page in home page it has an topbar compoent inside it it has an rectange component , these rectangle component is basically an set of categroeis there are differnt categories all comming form backend like , Home , Marriage , Death , Annivarsary  etc so by default as soon the user loogs in thee category is selected to Home and based on these selected category the Postcards are displayed , liek my post cards data also comes form backend , i have api whci is like localhost:8080/api/users/getUploaded-post/Home it takes token auth token which is stored in async ok so based on that category slected the post cards data is shows . here is data which it return see [
-    {
-        "id": 5,
-        "imageUrl": "https://shorturl.at/2qX4b",
-        "content": "Sample post content",
-        "tags": [
-            "tag1",
-            "tag2"
-        ],
-        "postUploaderId": 1,
-        "uploadedBy": "Chetan Mallah",
-        "categoryName": "Death",
-        "uploadedAt": "2025-07-15T14:30:00",
-        "totalLikes": 1,
-        "comments": [
-            {
-                "commenterId": 2,
-                "commentId": 4,
-                "commenterName": "lucky 123",
-                "text": "Good Pic 👌",
-                "commentedAt": "2025-07-18T18:15:32.930476"
-            },
-            {
-                "commenterId": 1,
-                "commentId": 13,
-                "commenterName": "Chetan Mallah",
-                "text": "Test",
-                "commentedAt": "2025-07-19T13:51:34.051288"
-            }
-        ],
-        "totalComments": 2,
-        "liked": false
-    }
-] kinda these thing so based on these my post card is hsown like username iamge like count coment count , and now on clcikign the comment it goes to new page and their it shows the all commetns it has and then user cna add the commetn and delet the comment okie. so now i thinkk off adding the comment posting and delting stuff with an websocket so in realt time it gets updated and the other users will know what id done or not kinda okie ? so is all my api response req is okie ? though ? just tell me or anything hsould i expect form my backend api and also any api i shoudl use kidna n all oke i have an delet api  localhost:8080/api/users/comment/6 which works only if the post owner calls it or if the comment owner calls it okie .
-*/ }

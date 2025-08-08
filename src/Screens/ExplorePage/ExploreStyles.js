@@ -1,98 +1,238 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+import { 
+  wp, hp, fontSize, spacing, borderRadius, shadows, getSafeAreaTop,
+  colors, typography, iconSize, layout, inputStyles
+} from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
- container: {
-    flexGrow: 1,
-    backgroundColor: '#fff',
-    padding: 20,
-    justifyContent: 'center',
+  container: {
+    flex: 1,
+    backgroundColor: colors.background.grouped,
+  },
+  
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.lg,
+    backgroundColor: colors.white,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.separator.nonOpaque,
+    ...shadows.xs,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
-    textAlign: 'center',
+  
+  headerTitle: {
+    fontSize: typography.title1,
+    fontWeight: '700',
+    color: colors.text.primary,
+    letterSpacing: -0.5,
   },
-  imagePicker: {
-    backgroundColor: '#f2f2f2',
-    borderRadius: 12,
-    padding: 20,
+  
+  postButton: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.xl,
+    minWidth: wp(20),
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: '#e1e1e1',
-    width: '100%',
+    ...shadows.sm,
   },
-  addImageText: {
-    color: '#aaa',
-    fontSize: 18,
+  
+  postButtonDisabled: {
+    backgroundColor: colors.gray[400],
+    ...shadows.none,
+  },
+  
+  postButtonText: {
+    color: colors.white,
+    fontSize: typography.subhead,
     fontWeight: '600',
-    marginBottom: 10,
+    letterSpacing: 0.2,
   },
-  pickImageButton: {
+  
+  scrollContainer: {
+    flex: 1,
+  },
+  
+  scrollContent: {
+    paddingBottom: layout.tabBarHeight + spacing.xl,
+  },
+  
+  section: {
+    backgroundColor: colors.white,
+    marginTop: spacing.lg,
+    marginHorizontal: spacing.lg,
+    borderRadius: borderRadius.xl,
+    padding: spacing.xl,
+    ...shadows.md,
+  },
+  
+  sectionTitle: {
+    fontSize: typography.headline,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: spacing.lg,
+    letterSpacing: -0.2,
+  },
+  
+  // Image picker styles
+  imagePicker: {
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.xl,
+    paddingVertical: spacing.xxxl,
+    paddingHorizontal: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: colors.separator.nonOpaque,
+    borderStyle: 'dashed',
+  },
+  
+  imagePickerText: {
+    fontSize: typography.title3,
+    fontWeight: '600',
+    color: colors.text.secondary,
+    marginTop: spacing.lg,
+    letterSpacing: -0.2,
+  },
+  
+  imagePickerSubtext: {
+    fontSize: typography.subhead,
+    color: colors.text.tertiary,
+    marginTop: spacing.sm,
+    fontWeight: '500',
+  },
+  
+  imageScrollContainer: {
+    paddingVertical: spacing.sm,
+  },
+  
+  imageContainer: {
+    position: 'relative',
+    marginRight: spacing.md,
+  },
+  
+  selectedImage: {
+    width: wp(25),
+    height: wp(25),
+    borderRadius: borderRadius.lg,
+    backgroundColor: colors.background.secondary,
+  },
+  
+  removeImageButton: {
+    position: 'absolute',
+    top: -spacing.sm,
+    right: -spacing.sm,
+    backgroundColor: colors.danger,
+    borderRadius: borderRadius.round,
+    width: wp(6),
+    height: wp(6),
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.white,
+    ...shadows.md,
+  },
+  
+  addMoreButton: {
+    width: wp(25),
+    height: wp(25),
+    borderRadius: borderRadius.lg,
+    backgroundColor: colors.background.secondary,
+    borderWidth: 2,
+    borderColor: colors.separator.nonOpaque,
+    borderStyle: 'dashed',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  // Input styles
+  captionInput: {
+    ...inputStyles.default,
+    height: hp(15),
+    textAlignVertical: 'top',
+    paddingTop: spacing.lg,
+    fontSize: typography.body,
+    lineHeight: typography.body * 1.4,
+  },
+  
+  input: {
+    ...inputStyles.default,
+    fontSize: typography.body,
+  },
+  
+  characterCount: {
+    fontSize: typography.caption1,
+    color: colors.text.tertiary,
+    textAlign: 'right',
+    marginTop: spacing.sm,
+    fontWeight: '500',
+  },
+  
+  // Picker styles
+  pickerContainer: {
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    overflow: 'hidden',
+  },
+  
+  pickerInput: {
+    fontSize: typography.body,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.lg,
+    paddingRight: spacing.xxxl,
+    color: colors.text.primary,
+    fontWeight: '500',
+  },
+  
+  pickerIcon: {
+    position: 'absolute',
+    right: spacing.lg,
+    top: '50%',
+    marginTop: -iconSize.md / 2,
+  },
+  
+  loadingContainer: {
+    paddingVertical: spacing.xl,
+    alignItems: 'center',
+  },
+  
+  // Privacy section
+  privacyOption: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 10,
+    justifyContent: 'space-between',
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.lg,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
   },
-  pickImageText: {
-    marginLeft: 10,
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  selectedImage: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-    borderRadius: 8,
-    resizeMode: 'cover',
-  },
-  captionInput: {
-    height: 50,
-    width: '100%',
-    borderColor: '#e1e1e1',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingLeft: 10,
-    fontSize: 16,
-    color: '#333',
-    marginBottom: 20,
-  },
-  categoryContainer: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  categoryLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 5,
-  },
-  categoryDropdown: {
-    height: 50,
-    borderColor: '#e1e1e1',
-    borderWidth: 1,
-    borderRadius: 8,
-    fontSize: 16,
-    color: '#333',
-  },
-  postButton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 15,
-    borderRadius: 8,
-    width: '100%',
+  
+  privacyInfo: {
+    flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
-  postButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+  
+  privacyTextContainer: {
+    marginLeft: spacing.md,
+    flex: 1,
+  },
+  
+  privacyTitle: {
+    fontSize: typography.body,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
+  },
+  
+  privacySubtitle: {
+    fontSize: typography.caption1,
+    color: colors.text.tertiary,
+    fontWeight: '500',
   },
 });
 
