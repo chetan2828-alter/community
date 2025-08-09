@@ -18,10 +18,7 @@ import { Ionicons, Feather } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { 
-  colors, spacing, borderRadius, typography, iconSize, 
-  shadows, layout, getSafeAreaTop 
-} from '../../utils/responsiveHelper';
+import { colors, iconSize } from '../../utils/responsiveHelper';
 import styles from './ExploreStyles';
 
 const Explore = () => {
@@ -126,7 +123,6 @@ const Explore = () => {
 
       if (response.ok) {
         Alert.alert('Success', 'Post created successfully!');
-        // Reset form
         setSelectedImages([]);
         setCaption('');
         setCategory('');
@@ -144,7 +140,7 @@ const Explore = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background.primary} />
       
       <KeyboardAvoidingView 
         style={{ flex: 1 }} 
@@ -157,6 +153,7 @@ const Explore = () => {
             style={[styles.postButton, (!caption.trim() || !category) && styles.postButtonDisabled]}
             onPress={handlePost}
             disabled={!caption.trim() || !category || posting}
+            activeOpacity={0.8}
           >
             {posting ? (
               <ActivityIndicator size="small" color={colors.white} />
@@ -188,6 +185,7 @@ const Explore = () => {
                     <TouchableOpacity 
                       style={styles.removeImageButton}
                       onPress={() => removeImage(index)}
+                      activeOpacity={0.8}
                     >
                       <Ionicons name="close" size={iconSize.sm} color={colors.white} />
                     </TouchableOpacity>
@@ -195,13 +193,21 @@ const Explore = () => {
                 ))}
                 
                 {selectedImages.length < 10 && (
-                  <TouchableOpacity style={styles.addMoreButton} onPress={handleImagePick}>
+                  <TouchableOpacity 
+                    style={styles.addMoreButton} 
+                    onPress={handleImagePick}
+                    activeOpacity={0.8}
+                  >
                     <Ionicons name="add" size={iconSize.lg} color={colors.text.tertiary} />
                   </TouchableOpacity>
                 )}
               </ScrollView>
             ) : (
-              <TouchableOpacity style={styles.imagePicker} onPress={handleImagePick}>
+              <TouchableOpacity 
+                style={styles.imagePicker} 
+                onPress={handleImagePick}
+                activeOpacity={0.8}
+              >
                 <Ionicons name="camera-outline" size={iconSize.xxl} color={colors.text.tertiary} />
                 <Text style={styles.imagePickerText}>Add Photos</Text>
                 <Text style={styles.imagePickerSubtext}>Share up to 10 photos</Text>
@@ -212,16 +218,18 @@ const Explore = () => {
           {/* Caption Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Caption</Text>
-            <TextInput
-              style={styles.captionInput}
-              placeholder="What's on your mind?"
-              placeholderTextColor={colors.text.tertiary}
-              value={caption}
-              onChangeText={setCaption}
-              multiline
-              maxLength={2200}
-              textAlignVertical="top"
-            />
+            <View style={styles.captionContainer}>
+              <TextInput
+                style={styles.captionInput}
+                placeholder="What's on your mind?"
+                placeholderTextColor={colors.text.tertiary}
+                value={caption}
+                onChangeText={setCaption}
+                multiline
+                maxLength={2200}
+                textAlignVertical="top"
+              />
+            </View>
             <Text style={styles.characterCount}>
               {caption.length}/2200
             </Text>
@@ -230,14 +238,16 @@ const Explore = () => {
           {/* Tags Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Tags</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Add tags (comma separated)"
-              placeholderTextColor={colors.text.tertiary}
-              value={tags}
-              onChangeText={setTags}
-              autoCapitalize="none"
-            />
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Add tags (comma separated)"
+                placeholderTextColor={colors.text.tertiary}
+                value={tags}
+                onChangeText={setTags}
+                autoCapitalize="none"
+              />
+            </View>
           </View>
 
           {/* Category Section */}

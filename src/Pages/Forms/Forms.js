@@ -17,10 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { 
-  colors, spacing, borderRadius, typography, iconSize, 
-  shadows, layout 
-} from '../../utils/responsiveHelper';
+import { colors } from '../../utils/responsiveHelper';
 import styles from './FormsStyles';
 
 const Forms = () => {
@@ -31,19 +28,14 @@ const Forms = () => {
   const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
-    // Personal Details
     firstName: '',
     lastName: '',
     gender: '',
     maritalStatus: '',
     dob: '',
-    
-    // Physical Attributes
     height: '',
     weight: '',
     bloodGroup: '',
-    
-    // Family Details
     fatherName: '',
     motherName: '',
     address: '',
@@ -146,27 +138,35 @@ const Forms = () => {
   const renderPersonalDetails = () => (
     <View style={styles.stepContainer}>
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Name')} *</Text>
+        <Text style={styles.label}>Name *</Text>
         <View style={styles.nameRow}>
-          <TextInput
-            style={[styles.input, styles.nameInput]}
-            placeholder="First Name"
-            value={formData.firstName}
-            onChangeText={(text) => updateField('firstName', text)}
-            autoCapitalize="words"
-          />
-          <TextInput
-            style={[styles.input, styles.nameInput]}
-            placeholder="Last Name"
-            value={formData.lastName}
-            onChangeText={(text) => updateField('lastName', text)}
-            autoCapitalize="words"
-          />
+          <View style={styles.nameInputContainer}>
+            <TextInput
+              style={styles.nameInput}
+              placeholder="First Name"
+              placeholderTextColor={colors.text.tertiary}
+              value={formData.firstName}
+              onChangeText={(text) => updateField('firstName', text)}
+              autoCapitalize="words"
+              returnKeyType="next"
+            />
+          </View>
+          <View style={styles.nameInputContainer}>
+            <TextInput
+              style={styles.nameInput}
+              placeholder="Last Name"
+              placeholderTextColor={colors.text.tertiary}
+              value={formData.lastName}
+              onChangeText={(text) => updateField('lastName', text)}
+              autoCapitalize="words"
+              returnKeyType="next"
+            />
+          </View>
         </View>
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Gender')} *</Text>
+        <Text style={styles.label}>Gender *</Text>
         <View style={styles.genderContainer}>
           {['Male', 'Female'].map((option) => (
             <TouchableOpacity
@@ -176,6 +176,7 @@ const Forms = () => {
                 formData.gender === option && styles.genderOptionSelected
               ]}
               onPress={() => updateField('gender', option)}
+              activeOpacity={0.8}
             >
               <Text style={[
                 styles.genderText,
@@ -189,7 +190,7 @@ const Forms = () => {
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Marital Status')}</Text>
+        <Text style={styles.label}>Marital Status</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={formData.maritalStatus}
@@ -206,14 +207,17 @@ const Forms = () => {
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Date of Birth')} *</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="DD/MM/YYYY"
-          value={formData.dob}
-          onChangeText={(text) => updateField('dob', text)}
-          keyboardType="numeric"
-        />
+        <Text style={styles.label}>Date of Birth *</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="DD/MM/YYYY"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.dob}
+            onChangeText={(text) => updateField('dob', text)}
+            keyboardType="numeric"
+          />
+        </View>
       </View>
     </View>
   );
@@ -221,29 +225,35 @@ const Forms = () => {
   const renderPhysicalAttributes = () => (
     <View style={styles.stepContainer}>
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Height')} *</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="e.g., 5.8 ft"
-          value={formData.height}
-          onChangeText={(text) => updateField('height', text)}
-          keyboardType="numeric"
-        />
+        <Text style={styles.label}>Height *</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g., 5.8 ft"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.height}
+            onChangeText={(text) => updateField('height', text)}
+            keyboardType="numeric"
+          />
+        </View>
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Weight')} *</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="e.g., 70 kg"
-          value={formData.weight}
-          onChangeText={(text) => updateField('weight', text)}
-          keyboardType="numeric"
-        />
+        <Text style={styles.label}>Weight *</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="e.g., 70 kg"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.weight}
+            onChangeText={(text) => updateField('weight', text)}
+            keyboardType="numeric"
+          />
+        </View>
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Blood Group')} *</Text>
+        <Text style={styles.label}>Blood Group *</Text>
         <View style={styles.pickerContainer}>
           <Picker
             selectedValue={formData.bloodGroup}
@@ -268,49 +278,61 @@ const Forms = () => {
   const renderFamilyDetails = () => (
     <View style={styles.stepContainer}>
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Father Name')} *</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Father's full name"
-          value={formData.fatherName}
-          onChangeText={(text) => updateField('fatherName', text)}
-          autoCapitalize="words"
-        />
+        <Text style={styles.label}>Father's Name *</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Father's full name"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.fatherName}
+            onChangeText={(text) => updateField('fatherName', text)}
+            autoCapitalize="words"
+          />
+        </View>
       </View>
 
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Mother's Name</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Mother's full name"
-          value={formData.motherName}
-          onChangeText={(text) => updateField('motherName', text)}
-          autoCapitalize="words"
-        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Mother's full name"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.motherName}
+            onChangeText={(text) => updateField('motherName', text)}
+            autoCapitalize="words"
+          />
+        </View>
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Address')} *</Text>
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          placeholder="Full address"
-          value={formData.address}
-          onChangeText={(text) => updateField('address', text)}
-          multiline
-          numberOfLines={3}
-          textAlignVertical="top"
-        />
+        <Text style={styles.label}>Address *</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={[styles.input, styles.textArea]}
+            placeholder="Full address"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.address}
+            onChangeText={(text) => updateField('address', text)}
+            multiline
+            numberOfLines={3}
+            textAlignVertical="top"
+          />
+        </View>
       </View>
 
       <View style={styles.inputGroup}>
-        <Text style={styles.label}>{t('Emergency Contact')} *</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Emergency contact number"
-          value={formData.emergencyContact}
-          onChangeText={(text) => updateField('emergencyContact', text)}
-          keyboardType="phone-pad"
-        />
+        <Text style={styles.label}>Emergency Contact *</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Emergency contact number"
+            placeholderTextColor={colors.text.tertiary}
+            value={formData.emergencyContact}
+            onChangeText={(text) => updateField('emergencyContact', text)}
+            keyboardType="phone-pad"
+          />
+        </View>
       </View>
     </View>
   );
@@ -326,7 +348,7 @@ const Forms = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.white} />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background.primary} />
       
       <KeyboardAvoidingView 
         style={{ flex: 1 }} 
@@ -336,7 +358,7 @@ const Forms = () => {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Complete Profile</Text>
           <Text style={styles.stepIndicator}>
-            {currentStep + 1} of {steps.length}
+            Step {currentStep + 1} of {steps.length}
           </Text>
         </View>
 
@@ -376,6 +398,7 @@ const Forms = () => {
             <TouchableOpacity 
               style={styles.secondaryButton} 
               onPress={handlePrevious}
+              activeOpacity={0.8}
             >
               <Text style={styles.secondaryButtonText}>Previous</Text>
             </TouchableOpacity>
@@ -388,6 +411,7 @@ const Forms = () => {
             ]}
             onPress={currentStep === steps.length - 1 ? handleSubmit : handleNext}
             disabled={loading}
+            activeOpacity={0.8}
           >
             {loading ? (
               <ActivityIndicator size="small" color={colors.white} />

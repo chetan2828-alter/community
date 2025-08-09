@@ -5,32 +5,28 @@ import {
 } from '../../utils/responsiveHelper';
 
 export default StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    backgroundColor: colors.background.grouped,
-  },
-  
   container: {
     flex: 1,
-    backgroundColor: colors.background.grouped,
+    backgroundColor: colors.background.primary,
   },
   
   header: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     paddingTop: getSafeAreaTop() + spacing.xl,
     paddingBottom: spacing.xl,
     paddingHorizontal: spacing.xl,
     alignItems: 'center',
-    ...shadows.sm,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.separator.nonOpaque,
   },
   
   logo: {
-    fontSize: typography.largeTitle,
+    fontSize: fontSize(32),
     fontWeight: '800',
     textAlign: "center",
     color: colors.text.primary,
     marginBottom: spacing.xl,
-    letterSpacing: -1,
+    letterSpacing: -0.5,
   },
   
   logoBold: {
@@ -48,9 +44,9 @@ export default StyleSheet.create({
     backgroundColor: colors.background.secondary,
     borderRadius: borderRadius.xl,
     overflow: "hidden",
-    width: wp(75),
-    height: layout.buttonHeight,
-    ...shadows.xs,
+    width: wp(80),
+    height: hp(6),
+    padding: spacing.xs,
   },
   
   toggle: {
@@ -59,40 +55,45 @@ export default StyleSheet.create({
     alignItems: "center",
     borderRadius: borderRadius.lg,
     marginHorizontal: spacing.xs,
-    marginVertical: spacing.xs,
   },
   
   activeToggle: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
     ...shadows.sm,
   },
   
   toggleText: {
-    fontSize: typography.subhead,
+    fontSize: fontSize(16),
     fontWeight: "600",
     color: colors.text.secondary,
     letterSpacing: 0.1,
   },
   
   activeToggleText: {
-    color: colors.primary,
+    color: colors.white,
     fontWeight: '700',
   },
   
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: colors.background.primary,
+  },
+  
   formContainer: {
-    backgroundColor: colors.white,
-    marginTop: spacing.lg,
-    marginHorizontal: spacing.lg,
-    borderRadius: borderRadius.xl,
-    padding: spacing.xl,
-    ...shadows.md,
+    backgroundColor: colors.background.primary,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xl,
+  },
+  
+  formSection: {
+    marginBottom: spacing.xl,
   },
   
   sectionTitle: {
-    fontSize: typography.headline,
-    fontWeight: "600",
+    fontSize: fontSize(20),
+    fontWeight: "700",
     color: colors.text.primary,
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
     letterSpacing: -0.2,
   },
   
@@ -123,7 +124,7 @@ export default StyleSheet.create({
   genderText: {
     color: colors.text.secondary,
     fontWeight: "600",
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     letterSpacing: 0.1,
   },
   
@@ -141,32 +142,40 @@ export default StyleSheet.create({
   
   nameInputContainer: {
     flex: 1,
-    ...inputStyles.default,
-    height: layout.inputHeight,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
+    height: hp(6.5),
     justifyContent: "center",
   },
   
   nameInput: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     color: colors.text.primary,
-    paddingVertical: 0,
     fontWeight: '500',
+    padding: 0,
+    margin: 0,
   },
   
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    ...inputStyles.default,
-    marginBottom: spacing.xl,
-    height: layout.inputHeight,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
     paddingHorizontal: spacing.lg,
+    marginBottom: spacing.xl,
+    height: hp(6.5),
   },
   
   input: {
     flex: 1,
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     color: colors.text.primary,
-    paddingVertical: spacing.md,
+    paddingVertical: 0,
     marginLeft: spacing.md,
     fontWeight: '500',
   },
@@ -177,10 +186,15 @@ export default StyleSheet.create({
   },
   
   actionButton: {
-    ...buttonStyles.primary,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.xl,
+    paddingVertical: spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: spacing.xl,
     marginBottom: spacing.lg,
-    height: layout.buttonHeight + spacing.md,
+    height: hp(6.5),
+    ...shadows.md,
   },
   
   disabledButton: {
@@ -191,7 +205,7 @@ export default StyleSheet.create({
   actionButtonText: {
     color: colors.white,
     fontWeight: "700",
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     letterSpacing: 0.2,
   },
   
@@ -203,8 +217,8 @@ export default StyleSheet.create({
   },
   
   checkbox: {
-    width: wp(5),
-    height: wp(5),
+    width: wp(5.5),
+    height: wp(5.5),
     borderWidth: 2,
     borderColor: colors.separator.opaque,
     borderRadius: borderRadius.sm,
@@ -212,6 +226,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginRight: spacing.md,
     marginTop: spacing.xs,
+    backgroundColor: colors.background.primary,
   },
   
   checkboxChecked: {
@@ -219,75 +234,33 @@ export default StyleSheet.create({
     borderColor: colors.primary,
   },
   
-  checkboxCheckmark: {
-    color: colors.white,
-    fontWeight: 'bold',
-    fontSize: fontSize(12),
-  },
-  
   termsText: {
-    fontSize: typography.footnote,
+    fontSize: fontSize(14),
     color: colors.text.secondary,
     flex: 1,
-    lineHeight: typography.footnote * 1.4,
+    lineHeight: fontSize(14) * 1.4,
     fontWeight: '400',
   },
   
   termsLink: {
     color: colors.primary,
     fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   
   errorText: {
     color: colors.danger,
-    fontSize: typography.subhead,
+    fontSize: fontSize(14),
     textAlign: "center",
     marginBottom: spacing.lg,
     marginTop: spacing.sm,
     fontWeight: '500',
-    backgroundColor: colors.danger + '10',
+    backgroundColor: colors.danger + '15',
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
     borderRadius: borderRadius.lg,
     borderWidth: 1,
     borderColor: colors.danger + '30',
-  },
-  
-  // Form sections
-  formSection: {
-    marginBottom: spacing.xl,
-  },
-  
-  sectionDivider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: colors.separator.nonOpaque,
-    marginVertical: spacing.xl,
-  },
-  
-  // Password strength indicator
-  passwordStrength: {
-    flexDirection: 'row',
-    marginTop: spacing.sm,
-    marginBottom: spacing.md,
-  },
-  
-  strengthBar: {
-    flex: 1,
-    height: spacing.xs,
-    backgroundColor: colors.background.secondary,
-    marginHorizontal: spacing.xs,
-    borderRadius: borderRadius.xs,
-  },
-  
-  strengthBarActive: {
-    backgroundColor: colors.success,
-  },
-  
-  strengthBarWeak: {
-    backgroundColor: colors.warning,
-  },
-  
-  strengthBarStrong: {
-    backgroundColor: colors.success,
+    marginHorizontal: spacing.md,
   },
 });

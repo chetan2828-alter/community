@@ -7,12 +7,12 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.grouped,
+    backgroundColor: colors.background.primary,
   },
   
   scrollContent: {
     paddingHorizontal: spacing.xl,
-    paddingTop: getSafeAreaTop() + spacing.xl,
+    paddingTop: spacing.xl,
     paddingBottom: layout.tabBarHeight + spacing.xl,
   },
   
@@ -23,36 +23,38 @@ const styles = StyleSheet.create({
   },
   
   title: {
-    fontSize: typography.largeTitle,
+    fontSize: fontSize(28),
     fontWeight: "800",
     color: colors.text.primary,
     marginBottom: spacing.md,
     textAlign: "center",
-    letterSpacing: -1,
+    letterSpacing: -0.5,
   },
   
   subtitle: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     color: colors.text.secondary,
     textAlign: "center",
     fontWeight: '500',
-    lineHeight: typography.body * 1.3,
+    lineHeight: fontSize(16) * 1.3,
   },
   
   section: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     borderRadius: borderRadius.xl,
     padding: spacing.xl,
     marginBottom: spacing.xl,
-    ...shadows.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator.nonOpaque,
+    ...shadows.sm,
   },
   
   sectionTitle: {
-    fontSize: typography.title3,
+    fontSize: fontSize(18),
     fontWeight: "700",
     color: colors.text.primary,
     marginBottom: spacing.lg,
-    letterSpacing: -0.3,
+    letterSpacing: -0.2,
   },
   
   // Gender selection
@@ -72,6 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background.secondary,
     borderWidth: 2,
     borderColor: colors.separator.nonOpaque,
+    gap: spacing.md,
     ...shadows.xs,
   },
   
@@ -83,10 +86,9 @@ const styles = StyleSheet.create({
   },
   
   genderText: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     fontWeight: "600",
-    color: colors.text.secondary,
-    marginLeft: spacing.md,
+    color: colors.text.primary,
     letterSpacing: 0.1,
   },
   
@@ -102,21 +104,37 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
   },
   
-  ageInput: {
+  ageInputContainer: {
     flex: 1,
-    ...inputStyles.default,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
+    height: hp(6),
+    justifyContent: 'center',
+  },
+  
+  ageInput: {
     textAlign: 'center',
-    fontSize: typography.title3,
+    fontSize: fontSize(18),
     fontWeight: '600',
     color: colors.text.primary,
-    height: layout.inputHeight + spacing.md,
+    padding: 0,
   },
   
   ageSeparator: {
-    fontSize: typography.title2,
+    fontSize: fontSize(16),
     color: colors.text.secondary,
-    fontWeight: "700",
+    fontWeight: "600",
     paddingHorizontal: spacing.md,
+  },
+  
+  helperText: {
+    fontSize: fontSize(12),
+    color: colors.text.tertiary,
+    marginTop: spacing.sm,
+    fontWeight: '500',
   },
   
   // Radio buttons
@@ -139,21 +157,31 @@ const styles = StyleSheet.create({
   radioOptionSelected: {
     backgroundColor: colors.primary + '15',
     borderColor: colors.primary,
+    ...shadows.sm,
   },
   
   radioText: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     color: colors.text.primary,
     marginLeft: spacing.md,
     fontWeight: '500',
     letterSpacing: 0.1,
   },
   
+  radioTextSelected: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  
   // Search button
   searchButton: {
-    ...buttonStyles.primary,
-    marginTop: spacing.xxxl,
-    height: layout.buttonHeight + spacing.md,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.xl,
+    paddingVertical: spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: spacing.xl,
+    height: hp(6.5),
     ...shadows.lg,
   },
   
@@ -164,39 +192,17 @@ const styles = StyleSheet.create({
   
   searchButtonText: {
     color: colors.white,
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     fontWeight: "700",
     letterSpacing: 0.3,
   },
   
-  // Form validation
-  validationMessage: {
-    fontSize: typography.caption1,
+  validationText: {
+    fontSize: fontSize(12),
     color: colors.danger,
-    marginTop: spacing.sm,
-    fontWeight: '500',
-  },
-  
-  // Helper text
-  helperText: {
-    fontSize: typography.caption1,
-    color: colors.text.tertiary,
-    marginTop: spacing.sm,
     textAlign: 'center',
-    fontWeight: '400',
-  },
-  
-  // Loading overlay
-  loadingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
+    marginTop: spacing.md,
+    fontWeight: '500',
   },
 });
 

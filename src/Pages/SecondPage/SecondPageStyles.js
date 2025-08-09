@@ -7,63 +7,96 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.gray[50],
+    backgroundColor: colors.background.primary,
+  },
+  
+  content: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: spacing.lg,
-    paddingTop: getSafeAreaTop() + spacing.xl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: getSafeAreaTop(),
   },
+  
   title: {
-    fontSize: isSmallDevice ? typography.h1 : fontSize(38),
-    fontWeight: '900',
+    fontSize: fontSize(28),
+    fontWeight: '800',
     color: colors.primary,
-    marginBottom: spacing.xxl,
-    textAlign: 'center',
-    letterSpacing: 1.5,
-  },
-  radioGroup: {
-    width: '100%',
-    marginBottom: spacing.xxl,
-    paddingHorizontal: spacing.md,
-  },
-  radioLabel: {
-    fontSize: typography.h4,
-    color: colors.gray[700],
     marginBottom: spacing.lg,
     textAlign: 'center',
-    fontWeight: '600',
+    letterSpacing: -0.5,
   },
+  
+  subtitle: {
+    fontSize: fontSize(16),
+    color: colors.text.secondary,
+    textAlign: 'center',
+    marginBottom: spacing.xxxl,
+    fontWeight: '500',
+    lineHeight: fontSize(16) * 1.3,
+    paddingHorizontal: spacing.lg,
+  },
+  
+  radioGroup: {
+    width: '100%',
+    marginBottom: spacing.xxxl,
+    gap: spacing.lg,
+  },
+  
   radioButtonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: spacing.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.lg,
-    borderRadius: borderRadius.lg,
-    backgroundColor: colors.white,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.xl,
+    borderRadius: borderRadius.xl,
+    backgroundColor: colors.background.secondary,
     borderWidth: 2,
-    borderColor: colors.gray[200],
-    ...shadows.small,
+    borderColor: colors.separator.nonOpaque,
+    ...shadows.sm,
   },
+  
+  radioButtonSelected: {
+    backgroundColor: colors.primary + '15',
+    borderColor: colors.primary,
+    ...shadows.md,
+  },
+  
   radioButtonText: {
-    fontSize: typography.h5,
-    color: colors.gray[700],
-    marginLeft: spacing.md,
+    fontSize: fontSize(16),
+    color: colors.text.primary,
+    marginLeft: spacing.lg,
     fontWeight: '500',
+    letterSpacing: 0.1,
+    flex: 1,
   },
+  
+  radioButtonTextSelected: {
+    color: colors.primary,
+    fontWeight: '600',
+  },
+  
   submitButton: {
     backgroundColor: colors.primary,
     paddingVertical: spacing.lg,
-    paddingHorizontal: wp(15),
-    borderRadius: borderRadius.lg,
-    marginTop: spacing.xl,
-    ...shadows.medium,
+    paddingHorizontal: spacing.xxxl,
+    borderRadius: borderRadius.xl,
+    width: wp(80),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: hp(6.5),
+    ...shadows.md,
   },
+  
+  submitButtonDisabled: {
+    backgroundColor: colors.gray[400],
+    ...shadows.none,
+  },
+  
   submitButtonText: {
     color: colors.white,
-    fontSize: typography.h4,
-    fontWeight: '800',
-    textAlign: 'center',
+    fontSize: fontSize(16),
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
 });
 

@@ -7,7 +7,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.grouped,
+    backgroundColor: colors.background.primary,
   },
   
   header: {
@@ -16,21 +16,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.lg,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.separator.nonOpaque,
-    ...shadows.xs,
   },
   
   headerTitle: {
-    fontSize: typography.title3,
-    fontWeight: '600',
+    fontSize: fontSize(20),
+    fontWeight: '700',
     color: colors.text.primary,
     letterSpacing: -0.2,
   },
   
   stepIndicator: {
-    fontSize: typography.subhead,
+    fontSize: fontSize(14),
     color: colors.text.tertiary,
     fontWeight: '500',
   },
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.lg,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
   },
   
   progressTrack: {
@@ -57,12 +56,11 @@ const styles = StyleSheet.create({
   stepHeader: {
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.xl,
-    backgroundColor: colors.white,
-    marginBottom: spacing.lg,
+    backgroundColor: colors.background.primary,
   },
   
   stepTitle: {
-    fontSize: typography.title2,
+    fontSize: fontSize(24),
     fontWeight: '700',
     color: colors.text.primary,
     marginBottom: spacing.sm,
@@ -70,10 +68,10 @@ const styles = StyleSheet.create({
   },
   
   stepSubtitle: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     color: colors.text.secondary,
     fontWeight: '400',
-    lineHeight: typography.body * 1.3,
+    lineHeight: fontSize(16) * 1.3,
   },
   
   scrollContainer: {
@@ -85,11 +83,10 @@ const styles = StyleSheet.create({
   },
   
   stepContainer: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     marginHorizontal: spacing.lg,
     borderRadius: borderRadius.xl,
     padding: spacing.xl,
-    ...shadows.md,
   },
   
   inputGroup: {
@@ -97,17 +94,28 @@ const styles = StyleSheet.create({
   },
   
   label: {
-    fontSize: typography.subhead,
+    fontSize: fontSize(16),
     fontWeight: '600',
     color: colors.text.primary,
     marginBottom: spacing.md,
     letterSpacing: -0.1,
   },
   
+  inputContainer: {
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
+    height: hp(6),
+    justifyContent: 'center',
+  },
+  
   input: {
-    ...inputStyles.default,
-    fontSize: typography.body,
+    fontSize: fontSize(16),
+    color: colors.text.primary,
     fontWeight: '400',
+    padding: 0,
   },
   
   textArea: {
@@ -121,8 +129,22 @@ const styles = StyleSheet.create({
     gap: spacing.lg,
   },
   
-  nameInput: {
+  nameInputContainer: {
     flex: 1,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
+    height: hp(6),
+    justifyContent: 'center',
+  },
+  
+  nameInput: {
+    fontSize: fontSize(16),
+    color: colors.text.primary,
+    fontWeight: '400',
+    padding: 0,
   },
   
   // Gender selection
@@ -150,7 +172,7 @@ const styles = StyleSheet.create({
   },
   
   genderText: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     fontWeight: '600',
     color: colors.text.secondary,
     letterSpacing: 0.1,
@@ -170,7 +192,7 @@ const styles = StyleSheet.create({
   },
   
   picker: {
-    height: layout.inputHeight,
+    height: hp(6),
     color: colors.text.primary,
   },
   
@@ -180,11 +202,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.lg,
     paddingBottom: Platform.OS === 'ios' ? getSafeAreaBottom() : spacing.lg,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.separator.nonOpaque,
     gap: spacing.lg,
-    ...shadows.lg,
   },
   
   primaryButton: {
@@ -194,6 +215,7 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.xl,
     alignItems: 'center',
     justifyContent: 'center',
+    height: hp(6),
     ...shadows.md,
   },
   
@@ -203,7 +225,7 @@ const styles = StyleSheet.create({
   
   primaryButtonText: {
     color: colors.white,
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     fontWeight: '600',
     letterSpacing: 0.2,
   },
@@ -217,12 +239,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: colors.separator.nonOpaque,
+    height: hp(6),
     ...shadows.xs,
   },
   
   secondaryButtonText: {
     color: colors.text.primary,
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     fontWeight: '600',
     letterSpacing: 0.1,
   },

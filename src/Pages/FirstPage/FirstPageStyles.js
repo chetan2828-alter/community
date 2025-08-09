@@ -7,70 +7,125 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background.primary,
+  },
+  
+  content: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.gray[50],
-    padding: spacing.lg,
-    paddingTop: getSafeAreaTop() + spacing.xxl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: getSafeAreaTop(),
   },
+  
   title: {
-    fontSize: typography.h1,
-    fontWeight: '900',
+    fontSize: fontSize(28),
+    fontWeight: '800',
     color: colors.primary,
-    marginBottom: spacing.xxl,
+    marginBottom: spacing.md,
     textAlign: 'center',
-    letterSpacing: 1,
+    letterSpacing: -0.5,
   },
+  
+  subtitle: {
+    fontSize: fontSize(16),
+    color: colors.text.secondary,
+    textAlign: 'center',
+    marginBottom: spacing.xxxl,
+    fontWeight: '500',
+    lineHeight: fontSize(16) * 1.3,
+  },
+  
+  pickerSection: {
+    width: '100%',
+    marginBottom: spacing.xxxl,
+  },
+  
   pickerContainer: {
-    height: hp(7),
-    width: wp(85),
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.lg,
-    borderColor: colors.primary,
-    borderWidth: 2,
-    marginBottom: spacing.xl,
-    paddingHorizontal: spacing.md,
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
     paddingVertical: spacing.sm,
     flexDirection: 'row',
     alignItems: 'center',
-    ...shadows.medium,
+    minHeight: hp(7),
+    ...shadows.sm,
   },
+  
   icon: {
-    marginRight: spacing.sm,
+    marginRight: spacing.md,
   },
+  
   picker: {
     flex: 1,
-    height: hp(6),
-    color: colors.primary,
-    fontSize: typography.h6,
+    color: colors.text.primary,
+    fontSize: fontSize(16),
     fontWeight: '500',
   },
+  
+  loadingContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.md,
+  },
+  
+  loadingText: {
+    marginLeft: spacing.md,
+    fontSize: fontSize(14),
+    color: colors.text.secondary,
+    fontWeight: '500',
+  },
+  
   button: {
     backgroundColor: colors.primary,
     paddingVertical: spacing.lg,
-    paddingHorizontal: wp(12),
-    borderRadius: borderRadius.lg,
-    marginBottom: spacing.lg,
-    ...shadows.medium,
+    paddingHorizontal: spacing.xxxl,
+    borderRadius: borderRadius.xl,
+    marginBottom: spacing.xl,
+    width: wp(80),
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: hp(6.5),
+    ...shadows.md,
   },
+  
+  buttonDisabled: {
+    backgroundColor: colors.gray[400],
+    ...shadows.none,
+  },
+  
   buttonText: {
     color: colors.white,
     fontWeight: '700',
-    fontSize: typography.h5,
+    fontSize: fontSize(16),
+    letterSpacing: 0.2,
   },
+  
   changeLanguageButton: {
-    backgroundColor: colors.gray[200],
-    paddingVertical: spacing.md,
-    paddingHorizontal: wp(10),
-    borderRadius: borderRadius.md,
-    marginTop: spacing.lg,
-    ...shadows.small,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.background.secondary,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.xl,
+    borderRadius: borderRadius.xl,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    ...shadows.xs,
   },
+  
+  languageIcon: {
+    marginRight: spacing.sm,
+  },
+  
   changeLanguageText: {
-    fontSize: typography.h6,
+    fontSize: fontSize(14),
     color: colors.primary,
     fontWeight: '600',
-    textAlign: 'center',
+    letterSpacing: 0.1,
   },
 });
 

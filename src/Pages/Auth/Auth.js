@@ -4,11 +4,12 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons, Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -382,7 +383,6 @@ const Auth = () => {
             </View>
 
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
-            }
 
             <View style={styles.termsContainer}>
               <CustomCheckbox 
@@ -393,14 +393,14 @@ const Auth = () => {
                 I agree to the{" "}
                 <Text
                   style={styles.termsLink}
-                  onPress={() => navigation.navigate("PrivacyPolicy")}
+                  onPress={() => console.log("Privacy Policy")}
                 >
                   Privacy Policy
                 </Text>{" "}
                 and{" "}
                 <Text
                   style={styles.termsLink}
-                  onPress={() => navigation.navigate("TermsConditions")}
+                  onPress={() => console.log("Terms & Conditions")}
                 >
                   Terms & Conditions
                 </Text>

@@ -1,94 +1,82 @@
-// // circleCardStyles.js
-// import { StyleSheet } from 'react-native';
-
-// export const styles = StyleSheet.create({
-//   cardContainer: {
-//     paddingVertical: 10,
-//   },
-//   circleCard: {
-//     width: 100,
-//     height: 130,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     borderRadius: 20, // Rounded corners for the whole card
-//     borderWidth: 2,
-//     borderColor: '#ddd',
-//     backgroundColor: '#fff',
-//     marginHorizontal: 10, // Space between cards
-//     elevation: 5, // Shadow for Android
-//     shadowColor: '#000', // iOS Shadow
-//     shadowOffset: { width: 0, height: 4 },
-//     shadowOpacity: 0.2,
-//     shadowRadius: 6,
-//   },
-//   circleImage: {
-//     width: 70,
-//     height: 70,
-//     borderRadius: 35, // Makes the image circular
-//   },
-//   circleText: {
-//     fontSize: 14,
-//     color: '#333',
-//     marginTop: 8,
-//     textAlign: 'center',
-//   },
-// });
-
-
 import { StyleSheet } from 'react-native';
+import { 
+  wp, hp, fontSize, spacing, borderRadius, shadows,
+  colors, typography, iconSize
+} from '../../utils/responsiveHelper';
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.background.primary,
+    paddingVertical: spacing.lg,
+  },
+  
   loaderContainer: {
-    paddingVertical: 20,
+    paddingVertical: spacing.xl,
     alignItems: 'center',
+    backgroundColor: colors.background.primary,
   },
+  
+  flatListContainer: {
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.md,
+  },
+  
   circleCard: {
-    minWidth: 90,
-    minHeight: 90,
-    borderRadius: 50,
-    justifyContent: 'center',
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.xl,
+    borderRadius: borderRadius.round,
+    marginHorizontal: spacing.sm,
+    minWidth: wp(20),
     alignItems: 'center',
-    marginHorizontal: 8,
-    padding: 10,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 4 },
+    justifyContent: 'center',
+    height: hp(5),
     borderWidth: 2,
+    ...shadows.xs,
   },
+  
   activeCard: {
-    backgroundColor: '#2c3e50',
-    borderColor: '#2c3e50',
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+    ...shadows.md,
+    transform: [{ scale: 1.05 }],
   },
+  
   inactiveCard: {
-    backgroundColor: '#ecf0f1',
-    borderColor: '#bdc3c7',
+    backgroundColor: colors.background.secondary,
+    borderColor: colors.separator.nonOpaque,
   },
+  
   cardText: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: fontSize(12),
+    fontWeight: '700',
+    letterSpacing: 0.5,
     textAlign: 'center',
+    textTransform: 'uppercase',
   },
+  
   activeText: {
-    color: '#fff',
+    color: colors.white,
   },
+  
   inactiveText: {
-    color: '#2c3e50',
+    color: colors.text.secondary,
   },
+  
   languageBtn: {
-    backgroundColor: '#3498db',
-    marginTop: 20,
+    backgroundColor: colors.primary,
     alignSelf: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    elevation: 3,
+    paddingHorizontal: spacing.xl,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.xl,
+    marginTop: spacing.md,
+    ...shadows.md,
   },
+  
   languageText: {
-    color: '#fff',
+    color: colors.white,
     fontWeight: '600',
-    fontSize: 14,
+    fontSize: fontSize(14),
+    letterSpacing: 0.2,
   },
 });
 

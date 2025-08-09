@@ -1,294 +1,3 @@
-
-// import React, { useState, useCallback, useEffect } from "react";
-// import {
-//   View,
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   ScrollView,
-//   StyleSheet,
-//   Keyboard,
-// } from "react-native";
-// import { MaterialCommunityIcons } from "@expo/vector-icons";
-// import { RadioButton } from "react-native-paper";
-// import { useNavigation, useFocusEffect } from "@react-navigation/native";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-// const Marriage = () => {
-//   const [ageFrom, setAgeFrom] = useState("");
-//   const [ageTo, setAgeTo] = useState("");
-//   const [gender, setGender] = useState("");
-//   const [status, setStatus] = useState("");
-//   const [isFormValid, setIsFormValid] = useState(false);
-//   const navigation = useNavigation();
-
-//   useEffect(() => {
-//     setIsFormValid(
-//       gender !== "" &&
-//       status !== "" &&
-//       ageFrom !== "" &&
-//       ageTo !== "" &&
-//       Number(ageFrom) <= Number(ageTo)
-//     );
-//   }, [ageFrom, ageTo, gender, status]);
-
-//   useFocusEffect(
-//     useCallback(() => {
-//       setAgeFrom("");
-//       setAgeTo("");
-//       setGender("");
-//       setStatus("");
-//     }, [])
-//   );
-
-//   const fetchMatches = async () => {
-//     if (!isFormValid) return;
-    
-//     Keyboard.dismiss();
-    
-//     try {
-//       const token = await AsyncStorage.getItem("token");
-//       if (!token) throw new Error("Please login first");
-
-//       const response = await fetch(`http://192.168.1.116:8080/api/users/filter?${new URLSearchParams({
-//         gender: gender.charAt(0).toUpperCase() + gender.slice(1),
-//         maritalStatus: status.charAt(0).toUpperCase() + status.slice(1),
-//         ageFrom,
-//         ageTo,
-//       }).toString()}`, {
-//         method: "GET",
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//           "Content-Type": "application/json",
-//         },
-//       });
-
-//       if (!response.ok) throw new Error("Failed to fetch matches");
-//       const data = await response.json();
-//       navigation.navigate("SearchResults", { matches: data });
-//     } catch (error) {
-//       alert(error.message);
-//     }
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       <ScrollView 
-//         contentContainerStyle={styles.scrollContent}
-//         keyboardShouldPersistTaps="handled"
-//       >
-//         {/* Header */}
-//         <View style={styles.header}>
-//           <Text style={styles.title}>Find Your Match</Text>
-//           <Text style={styles.subtitle}>Enter your preferences below</Text>
-//         </View>
-
-//         {/* Gender Selection */}
-//         <View style={styles.section}>
-//           <Text style={styles.sectionTitle}>I'm looking for*</Text>
-//           <View style={styles.genderRow}>
-//             {["male", "female"].map((option) => (
-//               <TouchableOpacity
-//                 key={option}
-//                 style={[
-//                   styles.genderButton,
-//                   gender === option && styles.genderButtonSelected
-//                 ]}
-//                 onPress={() => setGender(option)}
-//                 activeOpacity={0.8}
-//               >
-//                 <MaterialCommunityIcons
-//                   name={`gender-${option}`}
-//                   size={28}
-//                   color={gender === option ? "#fff" : "#000"}
-//                 />
-//                 <Text style={[
-//                   styles.genderText,
-//                   gender === option && styles.genderTextSelected
-//                 ]}>
-//                   {option.charAt(0).toUpperCase() + option.slice(1)}
-//                 </Text>
-//               </TouchableOpacity>
-//             ))}
-//           </View>
-//         </View>
-
-//         {/* Age Range */}
-//         <View style={styles.section}>
-//           <Text style={styles.sectionTitle}>Age Range*</Text>
-//           <View style={styles.ageRow}>
-//             <TextInput
-//               style={styles.ageInput}
-//               placeholder="From"
-//               placeholderTextColor="#999"
-//               value={ageFrom}
-//               onChangeText={setAgeFrom}
-//               keyboardType="numeric"
-//             />
-//             <Text style={styles.ageSeparator}>-</Text>
-//             <TextInput
-//               style={styles.ageInput}
-//               placeholder="To"
-//               placeholderTextColor="#999"
-//               value={ageTo}
-//               onChangeText={setAgeTo}
-//               keyboardType="numeric"
-//             />
-//           </View>
-//         </View>
-
-//         {/* Marital Status */}
-//         <View style={styles.section}>
-//           <Text style={styles.sectionTitle}>Marital Status*</Text>
-//           <RadioButton.Group onValueChange={setStatus} value={status}>
-//             <View style={styles.radioGroup}>
-//               {["single", "widowed", "divorcee"].map((option) => (
-//                 <TouchableOpacity
-//                   key={option}
-//                   style={styles.radioOption}
-//                   onPress={() => setStatus(option)}
-//                   activeOpacity={0.7}
-//                 >
-//                   <RadioButton 
-//                     value={option} 
-//                     color="#000" 
-//                     uncheckedColor="#aaa"
-//                   />
-//                   <Text style={styles.radioText}>
-//                     {option.charAt(0).toUpperCase() + option.slice(1)}
-//                   </Text>
-//                 </TouchableOpacity>
-//               ))}
-//             </View>
-//           </RadioButton.Group>
-//         </View>
-
-//         {/* Search Button */}
-//         <TouchableOpacity
-//           style={[
-//             styles.searchButton,
-//             !isFormValid && styles.searchButtonDisabled
-//           ]}
-//           onPress={fetchMatches}
-//           disabled={!isFormValid}
-//           activeOpacity={0.9}
-//         >
-//           <Text style={styles.searchButtonText}>Find Matches</Text>
-//         </TouchableOpacity>
-//       </ScrollView>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//   },
-//   scrollContent: {
-//     paddingHorizontal: 30,
-//     paddingTop: 30, // Lowered content position
-//     paddingBottom: 40,
-//   },
-//   header: {
-//     marginBottom: 35,
-//   },
-//   title: {
-//     fontSize: 40,
-//     fontWeight: "700",
-//     color: "#000",
-//     marginBottom: 8,
-//     textAlign: "center",
-//     marginTop: 75,
-//   },
-//   subtitle: {
-//     fontSize: 18,
-//     color: "#666",
-//     textAlign: "center",
-//   },
-//   section: {
-//     marginBottom: 30,
-//   },
-//   sectionTitle: {
-//     fontSize: 18,
-//     fontWeight: "600",
-//     color: "#000",
-//     marginBottom: 15,
-//   },
-//   genderRow: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     gap: 15,
-//   },
-//   genderButton: {
-//     flex: 1,
-//     flexDirection: "row",
-//     alignItems: "center",
-//     justifyContent: "center",
-//     paddingVertical: 15,
-//     borderRadius: 10,
-//     backgroundColor: "#f5f5f5",
-//   },
-//   genderButtonSelected: {
-//     backgroundColor: "#000",
-//   },
-//   genderText: {
-//     fontSize: 18,
-//     fontWeight: "500",
-//     color: "#000",
-//     marginLeft: 10,
-//   },
-//   genderTextSelected: {
-//     color: "#fff",
-//   },
-//   ageRow: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     gap: 10,
-//   },
-//   ageInput: {
-//     flex: 1,
-//     borderBottomWidth: 1,
-//     borderColor: "#ddd",
-//     paddingVertical: 12,
-//     fontSize: 18,
-//   },
-//   ageSeparator: {
-//     fontSize: 18,
-//     color: "#000",
-//     fontWeight: "500",
-//   },
-//   radioGroup: {
-//     marginLeft: -10,
-//   },
-//   radioOption: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     paddingVertical: 10,
-//   },
-//   radioText: {
-//     fontSize: 18,
-//     color: "#000",
-//     marginLeft: 10,
-//   },
-//   searchButton: {
-//     backgroundColor: "#000",
-//     paddingVertical: 18,
-//     borderRadius: 10,
-//     alignItems: "center",
-//     marginTop: 20,
-//   },
-//   searchButtonDisabled: {
-//     backgroundColor: "#aaa",
-//   },
-//   searchButtonText: {
-//     color: "#fff",
-//     fontSize: 18,
-//     fontWeight: "600",
-//   },
-// });
-
-// export default Marriage;
 import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
@@ -296,13 +5,18 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Keyboard
+  Keyboard,
+  StatusBar,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RadioButton } from "react-native-paper";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import styles from "./MarriageStyles"; // ✅ Import responsive styles
+import { colors } from "../../utils/responsiveHelper";
+import styles from "./MarriageStyles";
 
 const Marriage = () => {
   const [ageFrom, setAgeFrom] = useState("");
@@ -310,6 +24,7 @@ const Marriage = () => {
   const [gender, setGender] = useState("");
   const [status, setStatus] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -318,7 +33,9 @@ const Marriage = () => {
       status !== "" &&
       ageFrom !== "" &&
       ageTo !== "" &&
-      Number(ageFrom) <= Number(ageTo)
+      Number(ageFrom) <= Number(ageTo) &&
+      Number(ageFrom) >= 18 &&
+      Number(ageTo) <= 80
     );
   }, [ageFrom, ageTo, gender, status]);
 
@@ -328,6 +45,7 @@ const Marriage = () => {
       setAgeTo("");
       setGender("");
       setStatus("");
+      setLoading(false);
     }, [])
   );
 
@@ -335,10 +53,14 @@ const Marriage = () => {
     if (!isFormValid) return;
 
     Keyboard.dismiss();
+    setLoading(true);
 
     try {
       const token = await AsyncStorage.getItem("token");
-      if (!token) throw new Error("Please login first");
+      if (!token) {
+        Alert.alert("Authentication Error", "Please login first");
+        return;
+      }
 
       const response = await fetch(
         `http://192.168.1.116:8080/api/users/filter?${new URLSearchParams({
@@ -356,29 +78,36 @@ const Marriage = () => {
         }
       );
 
-      if (!response.ok) throw new Error("Failed to fetch matches");
+      if (!response.ok) {
+        throw new Error("Failed to fetch matches");
+      }
 
       const data = await response.json();
       navigation.navigate("SearchResults", { matches: data });
     } catch (error) {
-      alert(error.message);
+      Alert.alert("Error", error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <StatusBar barStyle="dark-content" backgroundColor={colors.background.primary} />
+      
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
           <Text style={styles.title}>Find Your Match</Text>
-          <Text style={styles.subtitle}>Enter your preferences below</Text>
+          <Text style={styles.subtitle}>Enter your preferences to find compatible matches</Text>
         </View>
 
-        {/* Gender */}
+        {/* Gender Selection */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>I'm looking for*</Text>
+          <Text style={styles.sectionTitle}>I'm looking for *</Text>
           <View style={styles.genderRow}>
             {["male", "female"].map((option) => (
               <TouchableOpacity
@@ -388,11 +117,12 @@ const Marriage = () => {
                   gender === option && styles.genderButtonSelected
                 ]}
                 onPress={() => setGender(option)}
+                activeOpacity={0.8}
               >
                 <MaterialCommunityIcons
                   name={`gender-${option}`}
-                  size={28}
-                  color={gender === option ? "#fff" : "#000"}
+                  size={24}
+                  color={gender === option ? colors.white : colors.text.primary}
                 />
                 <Text
                   style={[
@@ -407,64 +137,96 @@ const Marriage = () => {
           </View>
         </View>
 
-        {/* Age */}
+        {/* Age Range */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Age Range*</Text>
+          <Text style={styles.sectionTitle}>Age Range *</Text>
           <View style={styles.ageRow}>
-            <TextInput
-              style={styles.ageInput}
-              placeholder="From"
-              placeholderTextColor="#999"
-              value={ageFrom}
-              onChangeText={setAgeFrom}
-              keyboardType="numeric"
-            />
-            <Text style={styles.ageSeparator}>-</Text>
-            <TextInput
-              style={styles.ageInput}
-              placeholder="To"
-              placeholderTextColor="#999"
-              value={ageTo}
-              onChangeText={setAgeTo}
-              keyboardType="numeric"
-            />
+            <View style={styles.ageInputContainer}>
+              <TextInput
+                style={styles.ageInput}
+                placeholder="From"
+                placeholderTextColor={colors.text.tertiary}
+                value={ageFrom}
+                onChangeText={setAgeFrom}
+                keyboardType="numeric"
+                maxLength={2}
+              />
+            </View>
+            <Text style={styles.ageSeparator}>to</Text>
+            <View style={styles.ageInputContainer}>
+              <TextInput
+                style={styles.ageInput}
+                placeholder="To"
+                placeholderTextColor={colors.text.tertiary}
+                value={ageTo}
+                onChangeText={setAgeTo}
+                keyboardType="numeric"
+                maxLength={2}
+              />
+            </View>
           </View>
+          <Text style={styles.helperText}>Age range: 18-80 years</Text>
         </View>
 
         {/* Marital Status */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Marital Status*</Text>
-          <RadioButton.Group onValueChange={setStatus} value={status}>
-            <View style={styles.radioGroup}>
-              {["single", "widowed", "divorcee"].map((option) => (
-                <TouchableOpacity
-                  key={option}
-                  style={styles.radioOption}
-                  onPress={() => setStatus(option)}
-                >
-                  <RadioButton value={option} color="#000" />
-                  <Text style={styles.radioText}>
-                    {option.charAt(0).toUpperCase() + option.slice(1)}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </RadioButton.Group>
+          <Text style={styles.sectionTitle}>Marital Status *</Text>
+          <View style={styles.radioGroup}>
+            {[
+              { value: "single", label: "Single" },
+              { value: "widowed", label: "Widowed" },
+              { value: "divorcee", label: "Divorced" }
+            ].map((option) => (
+              <TouchableOpacity
+                key={option.value}
+                style={[
+                  styles.radioOption,
+                  status === option.value && styles.radioOptionSelected
+                ]}
+                onPress={() => setStatus(option.value)}
+                activeOpacity={0.8}
+              >
+                <RadioButton 
+                  value={option.value}
+                  status={status === option.value ? 'checked' : 'unchecked'}
+                  color={colors.primary}
+                  uncheckedColor={colors.text.tertiary}
+                />
+                <Text style={[
+                  styles.radioText,
+                  status === option.value && styles.radioTextSelected
+                ]}>
+                  {option.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
-        {/* Button */}
+        {/* Search Button */}
         <TouchableOpacity
           style={[
             styles.searchButton,
-            !isFormValid && styles.searchButtonDisabled
+            (!isFormValid || loading) && styles.searchButtonDisabled
           ]}
           onPress={fetchMatches}
-          disabled={!isFormValid}
+          disabled={!isFormValid || loading}
+          activeOpacity={0.9}
         >
-          <Text style={styles.searchButtonText}>Find Matches</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color={colors.white} />
+          ) : (
+            <Text style={styles.searchButtonText}>Find Matches</Text>
+          )}
         </TouchableOpacity>
+        
+        {!isFormValid && ageFrom && ageTo && (
+          <Text style={styles.validationText}>
+            Please ensure all fields are filled and age range is valid (18-80)
+          </Text>
+        )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

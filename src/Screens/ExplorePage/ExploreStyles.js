@@ -7,7 +7,7 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.grouped,
+    backgroundColor: colors.background.primary,
   },
   
   header: {
@@ -16,17 +16,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.lg,
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.separator.nonOpaque,
-    ...shadows.xs,
   },
   
   headerTitle: {
-    fontSize: typography.title1,
+    fontSize: fontSize(20),
     fontWeight: '700',
     color: colors.text.primary,
-    letterSpacing: -0.5,
+    letterSpacing: -0.3,
   },
   
   postButton: {
@@ -36,6 +35,8 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.xl,
     minWidth: wp(20),
     alignItems: 'center',
+    height: hp(5),
+    justifyContent: 'center',
     ...shadows.sm,
   },
   
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   
   postButtonText: {
     color: colors.white,
-    fontSize: typography.subhead,
+    fontSize: fontSize(14),
     fontWeight: '600',
     letterSpacing: 0.2,
   },
@@ -60,16 +61,18 @@ const styles = StyleSheet.create({
   },
   
   section: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.background.primary,
     marginTop: spacing.lg,
     marginHorizontal: spacing.lg,
     borderRadius: borderRadius.xl,
     padding: spacing.xl,
-    ...shadows.md,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.separator.nonOpaque,
+    ...shadows.sm,
   },
   
   sectionTitle: {
-    fontSize: typography.headline,
+    fontSize: fontSize(18),
     fontWeight: '600',
     color: colors.text.primary,
     marginBottom: spacing.lg,
@@ -90,7 +93,7 @@ const styles = StyleSheet.create({
   },
   
   imagePickerText: {
-    fontSize: typography.title3,
+    fontSize: fontSize(18),
     fontWeight: '600',
     color: colors.text.secondary,
     marginTop: spacing.lg,
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
   },
   
   imagePickerSubtext: {
-    fontSize: typography.subhead,
+    fontSize: fontSize(14),
     color: colors.text.tertiary,
     marginTop: spacing.sm,
     fontWeight: '500',
@@ -148,22 +151,43 @@ const styles = StyleSheet.create({
   },
   
   // Input styles
+  captionContainer: {
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.lg,
+    minHeight: hp(12),
+  },
+  
   captionInput: {
-    ...inputStyles.default,
-    height: hp(15),
+    fontSize: fontSize(16),
+    color: colors.text.primary,
+    fontWeight: '400',
+    lineHeight: fontSize(16) * 1.4,
     textAlignVertical: 'top',
-    paddingTop: spacing.lg,
-    fontSize: typography.body,
-    lineHeight: typography.body * 1.4,
+    minHeight: hp(10),
+  },
+  
+  inputContainer: {
+    backgroundColor: colors.background.secondary,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.separator.nonOpaque,
+    paddingHorizontal: spacing.lg,
+    height: hp(6),
+    justifyContent: 'center',
   },
   
   input: {
-    ...inputStyles.default,
-    fontSize: typography.body,
+    fontSize: fontSize(16),
+    color: colors.text.primary,
+    fontWeight: '400',
   },
   
   characterCount: {
-    fontSize: typography.caption1,
+    fontSize: fontSize(12),
     color: colors.text.tertiary,
     textAlign: 'right',
     marginTop: spacing.sm,
@@ -180,7 +204,7 @@ const styles = StyleSheet.create({
   },
   
   pickerInput: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.lg,
     paddingRight: spacing.xxxl,
@@ -223,14 +247,14 @@ const styles = StyleSheet.create({
   },
   
   privacyTitle: {
-    fontSize: typography.body,
+    fontSize: fontSize(16),
     fontWeight: '600',
     color: colors.text.primary,
     marginBottom: spacing.xs,
   },
   
   privacySubtitle: {
-    fontSize: typography.caption1,
+    fontSize: fontSize(12),
     color: colors.text.tertiary,
     fontWeight: '500',
   },
